@@ -1,0 +1,29 @@
+The TapuinoNext project is Copyright Peter Edwards (2021) and licensed under the following terms:
+
+1. Non-commercial licensing:
+    For non-commercial licensing the project is licensed under:
+        - CC BY-NC 4.0 for the TapuinoNext hardware: schematics, layouts, gerbers, diagrams, documentation, prototype detail, pictures etc.
+        - GPL 3.0 for the TapuinoNext firmware / source code.
+    See the included licenses for detail.
+
+2. Commercial licensing:
+    Licences for commercial production of the TapuinoNext will be granted at the sole discrection of the author,
+    under terms that will be negotiated between the parties involved.
+
+What does this mean for you?
+    If you are building the TapuinoNext project for your personal use, for a friend etc. please go ahead, remix and enjoy.
+    Please attribute me for the work and share your changes / improvements if any.
+    See the included licenses for detail.
+    Pull requests are welcome and can be submitted at: https://github.com/sweetlilmre/TapuinoNext
+    
+    If you wish to produce and sell kits at cost as a service to the community, I'd love to know about this.
+    Contact me at sweetlilmre@gmail.com and we can sort something out.
+
+    If you are a commercial business that wishes to build and sell the TapuinoNext you need to obtain a licence from me to do so.
+    You can contact me at sweetlilmre@gmail.com to discuss this.
+
+Why the restriction on commercial licensing?
+    Without getting into detail, let's just say I've been burnt before. I spent an amazing amount of time developing first
+    the Tapuino and then the TapuinoNext. I did this so that people could share and benefit from the work and so that I
+    could give something back to the wonderful C64 community. However, I would like to retain some control over how the
+    Tapuino Next is used commercially.
