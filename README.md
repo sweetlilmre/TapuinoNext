@@ -1,1 +1,33 @@
 # TapuinoNext
+
+## Intro
+
+If you can see this, welcome to the TapuinoNext alpha.
+Most of the code has been written and tested to a fair extent, but there are bound to be loads of bugs.
+Please report bugs as issues against the repo, and if you have fixes as a pull request.
+I could really use some help with documentation in markdown format if you would like to contribute in that way.
+
+## Hardware
+I haven't had time to document the hardware to the level I would like.
+At this point in time, you are pretty much on your own, apart from the schematic in the docs folder.
+
+The BOM for the TapuinoNext is:
+- ESP32 Devkit equivalent: e.g. https://www.banggood.com/ESP32-WiFi-+-bluetooth-Development-Board-Ultra-Low-Power-Consumption-Dual-Core-ESP-32-ESP-32S-Similar-ESP8266-Geekcreit-for-Arduino-products-that-work-with-official-Arduino-boards-p-1175488.html
+- 1k resistor, 2k resistor (voltage divider)
+- Rotary encoder KY-040: e.g. https://www.banggood.com/5Pcs-5V-KY-040-Rotary-Encoder-Module-AVR-PIC-p-951151.html
+- LCD screen: SSD1306 OLED or HD44780 via I2C backpack
+- SD Card breakout board / socket, no level shifter! Ones without resistors seem to work better. I used something like this: https://www.mischianti.org/2019/12/15/how-to-use-sd-card-with-esp8266-and-arduino/
+- Bi-directional level shifter: e.g. https://www.banggood.com/10Pcs-Logic-Level-Converter-Bi-Directional-IIC-4-Way-Level-Conversion-Module-p-1033750.html
+- C64 Datasette connector (use one off of a dead datasette or find one of these: https://www.thefuturewas8bit.com/cassette-port-connector-vic20-64-64c-128-128d-pet.html)
+
+Wire this all up according to the schematic and flash the firmware.
+
+## Firmware
+
+Probably the easiest way to handle this at the moment is to:
+- install VS Code
+- install Platformio on top of that
+- install the Espressif 32 platform or start a new project and choose "Espressif ESP32 Dev Module" as the board with "Arduino" as the framework.
+- clone the TapuinoNext repository
+- point VS code to the directory you cloned the repo into and upload to the board (I'm assuming that you know how to do all of this)
+
