@@ -52,6 +52,35 @@ ESP32InputHandler::~ESP32InputHandler()
     detachInterrupt(digitalPinToInterrupt(ROTARY_ENCODER_B_PIN));
 }
 
+/*
+
+ CW AB state transition: 11 10 00 01
+                          ^        |
+                          +--------+
+
+CCW AB state transition: 01 00 10 11
+                          ^        |
+                          +--------+
+
+STATE   Direction
+0000    X
+0001    CW
+0010    CCW
+0011    X
+0100    CCW
+0101    X
+0110    X
+0111    CW
+1000    CW
+1001    X
+1010    X
+1011    CCW
+1100    X
+1101    CCW
+1110    CW
+1111    X
+*/
+
 void ESP32InputHandler::ReadEncoder()
 {
     static uint8_t prevNextCode = 0;
@@ -60,18 +89,18 @@ void ESP32InputHandler::ReadEncoder()
 
     prevNextCode <<= 2;
     if (digitalRead(ROTARY_ENCODER_A_PIN))
-        prevNextCode |= 0x01;
+        prevNextCode |= 0b01;
     if (digitalRead(ROTARY_ENCODER_B_PIN))
-        prevNextCode |= 0x02;
-    prevNextCode &= 0x0f;
+        prevNextCode |= 0b10;
+    prevNextCode &= 0b00001111;
 
     if (stateTable[prevNextCode])
     {
         store <<= 4;
         store |= prevNextCode;
-        if ((store & 0xff) == 0x2b)
+        if ((store & 0xFF) == 0b00101011)
             encoderDir = -1;
-        if ((store & 0xff) == 0x17)
+        if ((store & 0xFF) == 0b00010111)
             encoderDir = 1;
     }
 }

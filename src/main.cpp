@@ -101,18 +101,23 @@ bool initTapuino()
     theLCD.Init(I2C_DISP_ADDR);
 
     lcdUtils.Title("TapuinoNext");
+    Serial.println("TapuinoNext");
     char version[I2C_DISP_COLS + 1];
     snprintf(version, I2C_DISP_COLS + 1, "V: %d.%d.%d", TAPUINO_MAJOR_VERSION, TAPUINO_MINOR_VERSION, TAPUINO_BUILD_VERSION);
     lcdUtils.Status(version);
+    Serial.println(version);
     delay(2000);
 
     lcdUtils.Status(S_INIT);
+    Serial.println("Starting SD init");
 
     if (!theFileLoader.Init())
     {
+        Serial.println(S_INIT_FAILED);
         lcdUtils.Status(S_INIT_FAILED);
         return false;
     }
+    Serial.println(S_INIT_OK);
     lcdUtils.Status(S_INIT_OK);
     delay(1000);
     return (true);
