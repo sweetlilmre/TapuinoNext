@@ -190,6 +190,8 @@
 <wire x1="92.69" y1="5.08" x2="92.69" y2="49.2" width="0" layer="20"/>
 <wire x1="92.69" y1="49.2" x2="19.05" y2="49.2" width="0" layer="20"/>
 <wire x1="19.05" y1="49.2" x2="19.05" y2="5.08" width="0" layer="20"/>
+<text x="69.85" y="25.4" size="1.778" layer="22" rot="MR0">TapuinoNext (c) 2021 sweetlilmre
+Minimum Reference Board</text>
 </plain>
 <libraries>
 <library name="SparkFun-Boards">
@@ -2076,6 +2078,10 @@ design rules under a new name.</description>
 </board>
 </drawing>
 <compatibility>
+<note version="6.3" minversion="6.2.2" severity="warning">
+Since Version 6.2.2 text objects can contain more than one line,
+which will not be processed correctly with this version.
+</note>
 <note version="8.2" severity="warning">
 Since Version 8.2, EAGLE supports online libraries. The ids
 of those online libraries will not be understood (or retained)
