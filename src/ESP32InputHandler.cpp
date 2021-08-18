@@ -81,6 +81,30 @@ STATE   Direction
 1111    X
 */
 
+/*
+    0000    0001    0010    0011    0100    0101    0110    0111    1000    1001    1010    1011    1100    1101    1110    1111
+       0,      1,      1,      0,      1,      0,      0,      1,      1,      0,      0,      1,      0,      1,      1,      0
+
+input           pv          store
+10 AB State     0010 = 1    00000010
+00 AB State     1000 = 1    00101000
+10 AB State     0010 = 1    10000010
+00 AB State     1000 = 1    00101000
+01 AB State     0001 = 1    10000001
+00 AB State     0100 = 1    00010100
+01 AB State     0001 = 1    01000001
+11 AB State     0111 = 1    00010111 ->
+01 AB State     1101 = 1    01111101
+11 AB State     0111 = 1    11010111
+01 AB State     1101 = 1    01111101
+11 AB State     0111 = 1    11010111
+
+10 AB State     1110 = 1    01111110
+00 AB State     1000 = 1    11101000
+01 AB State     0001 = 1    10000001
+11 AB State     0111 = 1    00010111 ->
+*/
+
 void ESP32InputHandler::ReadEncoder()
 {
     static uint8_t prevNextCode = 0;
@@ -89,9 +113,13 @@ void ESP32InputHandler::ReadEncoder()
 
     prevNextCode <<= 2;
     if (digitalRead(ROTARY_ENCODER_A_PIN))
+    {
         prevNextCode |= 0b01;
+    }
     if (digitalRead(ROTARY_ENCODER_B_PIN))
+    {
         prevNextCode |= 0b10;
+    }
     prevNextCode &= 0b00001111;
 
     if (stateTable[prevNextCode])

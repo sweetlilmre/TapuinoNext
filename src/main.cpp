@@ -90,8 +90,45 @@ void testPins()
     }
 }
 
+void testEncoderPins()
+{
+    Serial.println("testEncoderPins");
+    pinMode(ROTARY_ENCODER_A_PIN, INPUT_PULLUP);
+    pinMode(ROTARY_ENCODER_B_PIN, INPUT_PULLUP);
+
+    char buf[50];
+    int oldA = digitalRead(ROTARY_ENCODER_A_PIN);
+    int oldB = digitalRead(ROTARY_ENCODER_B_PIN);
+    strcpy(buf, "00 AB State\n");
+    buf[0] = oldA ? '1' : '0';
+    buf[1] = oldB ? '1' : '0';
+    Serial.print(buf);
+
+    Button encoderButton;
+    encoderButton.Init(ROTARY_ENCODER_BUTTON_PIN);
+
+    while (true)
+    {
+        int a = digitalRead(ROTARY_ENCODER_A_PIN);
+        int b = digitalRead(ROTARY_ENCODER_B_PIN);
+        if (a != oldA || b != oldB)
+        {
+            oldA = a;
+            oldB = b;
+
+            buf[0] = oldA ? '1' : '0';
+            buf[1] = oldB ? '1' : '0';
+            Serial.print(buf);
+        }
+        if (encoderButton.GetState() == ButtonState::CLICKED)
+        {
+            Serial.println("--------------------------------");
+        }
+    }
+}
+
 #define TAPUINO_MAJOR_VERSION 0
-#define TAPUINO_MINOR_VERSION 1
+#define TAPUINO_MINOR_VERSION 2
 #define TAPUINO_BUILD_VERSION 0
 
 bool initTapuino()
@@ -102,6 +139,9 @@ bool initTapuino()
 
     lcdUtils.Title("TapuinoNext");
     Serial.println("TapuinoNext");
+
+    //testEncoderPins();
+
     char version[I2C_DISP_COLS + 1];
     snprintf(version, I2C_DISP_COLS + 1, "V: %d.%d.%d", TAPUINO_MAJOR_VERSION, TAPUINO_MINOR_VERSION, TAPUINO_BUILD_VERSION);
     lcdUtils.Status(version);

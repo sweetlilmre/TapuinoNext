@@ -35,8 +35,10 @@
 
 # Analysis
 *.map
-output.map
-/*.map
 
 #vscode
 .vscode/*
+
+#eagle
+*.b\#*
+*.s\#*
