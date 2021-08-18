@@ -44,3 +44,6 @@ Probably the easiest way to handle this at the moment is to:
 - clone the TapuinoNext repository
 - point VS code to the directory you cloned the repo into and upload to the board (I'm assuming that you know how to do all of this)
 
+## Attribution
+
+See [Attribution](docs/Attribution.md)
