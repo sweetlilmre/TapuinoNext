@@ -44,3 +44,4 @@
 *.s\#*
 *.l\#*
 
+include/config-user.h
