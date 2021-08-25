@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE eagle SYSTEM "eagle.dtd">
+<eagle version="9.6.2">
+<drawing>
+<settings>
+<setting alwaysvectorfont="no"/>
+<setting verticaltext="up"/>
+</settings>
+<grid distance="50" unitdist="mil" unit="mil" style="lines" multiple="1" display="yes" altdistance="5" altunitdist="mil" altunit="mil"/>
+<layers>
+<layer number="1" name="Top" color="4" fill="1" visible="yes" active="yes"/>
+<layer number="2" name="Route2" color="1" fill="3" visible="no" active="yes"/>
+<layer number="3" name="Route3" color="4" fill="3" visible="no" active="yes"/>
+<layer number="4" name="Route4" color="1" fill="4" visible="no" active="yes"/>
+<layer number="5" name="Route5" color="4" fill="4" visible="no" active="yes"/>
+<layer number="6" name="Route6" color="1" fill="8" visible="no" active="yes"/>
+<layer number="7" name="Route7" color="4" fill="8" visible="no" active="yes"/>
+<layer number="8" name="Route8" color="1" fill="2" visible="no" active="yes"/>
+<layer number="9" name="Route9" color="4" fill="2" visible="no" active="yes"/>
+<layer number="10" name="Route10" color="1" fill="7" visible="no" active="yes"/>
+<layer number="11" name="Route11" color="4" fill="7" visible="no" active="yes"/>
+<layer number="12" name="Route12" color="1" fill="5" visible="no" active="yes"/>
+<layer number="13" name="Route13" color="4" fill="5" visible="no" active="yes"/>
+<layer number="14" name="Route14" color="1" fill="6" visible="no" active="yes"/>
+<layer number="15" name="Route15" color="4" fill="6" visible="no" active="yes"/>
+<layer number="16" name="Bottom" color="1" fill="1" visible="yes" active="yes"/>
+<layer number="17" name="Pads" color="2" fill="1" visible="yes" active="yes"/>
+<layer number="18" name="Vias" color="2" fill="1" visible="yes" active="yes"/>
+<layer number="19" name="Unrouted" color="6" fill="1" visible="yes" active="yes"/>
+<layer number="20" name="Dimension" color="24" fill="1" visible="yes" active="yes"/>
+<layer number="21" name="tPlace" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="22" name="bPlace" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="23" name="tOrigins" color="15" fill="1" visible="yes" active="yes"/>
+<layer number="24" name="bOrigins" color="15" fill="1" visible="yes" active="yes"/>
+<layer number="25" name="tNames" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="26" name="bNames" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="27" name="tValues" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="28" name="bValues" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="29" name="tStop" color="7" fill="3" visible="no" active="yes"/>
+<layer number="30" name="bStop" color="7" fill="6" visible="no" active="yes"/>
+<layer number="31" name="tCream" color="7" fill="4" visible="no" active="yes"/>
+<layer number="32" name="bCream" color="7" fill="5" visible="no" active="yes"/>
+<layer number="33" name="tFinish" color="6" fill="3" visible="no" active="yes"/>
+<layer number="34" name="bFinish" color="6" fill="6" visible="no" active="yes"/>
+<layer number="35" name="tGlue" color="7" fill="4" visible="no" active="yes"/>
+<layer number="36" name="bGlue" color="7" fill="5" visible="no" active="yes"/>
+<layer number="37" name="tTest" color="7" fill="1" visible="no" active="yes"/>
+<layer number="38" name="bTest" color="7" fill="1" visible="no" active="yes"/>
+<layer number="39" name="tKeepout" color="4" fill="11" visible="yes" active="yes"/>
+<layer number="40" name="bKeepout" color="1" fill="11" visible="yes" active="yes"/>
+<layer number="41" name="tRestrict" color="4" fill="10" visible="yes" active="yes"/>
+<layer number="42" name="bRestrict" color="1" fill="10" visible="yes" active="yes"/>
+<layer number="43" name="vRestrict" color="2" fill="10" visible="yes" active="yes"/>
+<layer number="44" name="Drills" color="7" fill="1" visible="no" active="yes"/>
+<layer number="45" name="Holes" color="7" fill="1" visible="no" active="yes"/>
+<layer number="46" name="Milling" color="3" fill="1" visible="no" active="yes"/>
+<layer number="47" name="Measures" color="7" fill="1" visible="no" active="yes"/>
+<layer number="48" name="Document" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="49" name="Reference" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="51" name="tDocu" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="52" name="bDocu" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="88" name="SimResults" color="9" fill="1" visible="yes" active="yes"/>
+<layer number="89" name="SimProbes" color="9" fill="1" visible="yes" active="yes"/>
+<layer number="90" name="Modules" color="5" fill="1" visible="yes" active="yes"/>
+<layer number="91" name="Nets" color="2" fill="1" visible="yes" active="yes"/>
+<layer number="92" name="Busses" color="1" fill="1" visible="yes" active="yes"/>
+<layer number="93" name="Pins" color="2" fill="1" visible="yes" active="yes"/>
+<layer number="94" name="Symbols" color="4" fill="1" visible="yes" active="yes"/>
+<layer number="95" name="Names" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="96" name="Values" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="97" name="Info" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="98" name="Guide" color="6" fill="1" visible="yes" active="yes"/>
+</layers>
+<library>
+<packages>
+<package name="ESP32-DEVKITC-38">
+<pad name="1" x="12.69" y="-20.33" drill="1" diameter="1.9304" rot="R90"/>
+<pad name="2" x="12.69" y="-17.79" drill="1" diameter="1.9304" rot="R90"/>
+<pad name="3" x="12.69" y="-15.25" drill="1" diameter="1.9304" rot="R90"/>
+<pad name="4" x="12.69" y="-12.71" drill="1" diameter="1.9304" rot="R90"/>
+<pad name="5" x="12.69" y="-10.17" drill="1" diameter="1.9304" rot="R90"/>
+<pad name="6" x="12.69" y="-7.63" drill="1" diameter="1.9304" rot="R90"/>
+<pad name="7" x="12.69" y="-5.09" drill="1" diameter="1.9304" rot="R90"/>
+<pad name="8" x="12.69" y="-2.55" drill="1" diameter="1.9304" rot="R90"/>
+<pad name="9" x="12.69" y="-0.01" drill="1" diameter="1.9304" rot="R90"/>
+<pad name="10" x="12.69" y="2.53" drill="1" diameter="1.9304" rot="R90"/>
+<pad name="11" x="12.69" y="5.07" drill="1" diameter="1.9304" rot="R90"/>
+<pad name="12" x="12.69" y="7.61" drill="1" diameter="1.9304" rot="R90"/>
+<pad name="13" x="12.69" y="10.15" drill="1" diameter="1.9304" rot="R90"/>
+<pad name="14" x="12.69" y="12.69" drill="1" diameter="1.9304" rot="R90"/>
+<pad name="15" x="12.69" y="15.23" drill="1" diameter="1.9304" rot="R90"/>
+<pad name="16" x="12.69" y="17.77" drill="1" diameter="1.9304" rot="R90"/>
+<pad name="17" x="12.69" y="20.31" drill="1" diameter="1.9304" rot="R90"/>
+<pad name="18" x="12.69" y="22.85" drill="1" diameter="1.9304" rot="R90"/>
+<pad name="19" x="12.69" y="25.39" drill="1" diameter="1.9304" rot="R90"/>
+<pad name="38" x="-12.5" y="-20.33" drill="1" diameter="1.9304" rot="R90"/>
+<pad name="37" x="-12.5" y="-17.79" drill="1" diameter="1.9304" rot="R90"/>
+<pad name="36" x="-12.5" y="-15.25" drill="1" diameter="1.9304" rot="R90"/>
+<pad name="35" x="-12.5" y="-12.71" drill="1" diameter="1.9304" rot="R90"/>
+<pad name="34" x="-12.5" y="-10.17" drill="1" diameter="1.9304" rot="R90"/>
+<pad name="33" x="-12.5" y="-7.63" drill="1" diameter="1.9304" rot="R90"/>
+<pad name="32" x="-12.5" y="-5.09" drill="1" diameter="1.9304" rot="R90"/>
+<pad name="31" x="-12.5" y="-2.55" drill="1" diameter="1.9304" rot="R90"/>
+<pad name="30" x="-12.5" y="-0.01" drill="1" diameter="1.9304" rot="R90"/>
+<pad name="29" x="-12.5" y="2.53" drill="1" diameter="1.9304" rot="R90"/>
+<pad name="28" x="-12.5" y="5.07" drill="1" diameter="1.9304" rot="R90"/>
+<pad name="27" x="-12.5" y="7.61" drill="1" diameter="1.9304" rot="R90"/>
+<pad name="26" x="-12.5" y="10.15" drill="1" diameter="1.9304" rot="R90"/>
+<pad name="25" x="-12.5" y="12.69" drill="1" diameter="1.9304" rot="R90"/>
+<pad name="24" x="-12.5" y="15.23" drill="1" diameter="1.9304" rot="R90"/>
+<pad name="23" x="-12.5" y="17.77" drill="1" diameter="1.9304" rot="R90"/>
+<pad name="22" x="-12.5" y="20.31" drill="1" diameter="1.9304" rot="R90"/>
+<pad name="21" x="-12.5" y="22.85" drill="1" diameter="1.9304" rot="R90"/>
+<pad name="20" x="-12.5" y="25.39" drill="1" diameter="1.9304" rot="R90"/>
+<text x="11.405" y="-19.67" size="1.016" layer="21" rot="R180">3V3</text>
+<text x="11.405" y="-17.13" size="1.016" layer="21" rot="R180">EN</text>
+<text x="11.405" y="-14.59" size="1.016" layer="21" rot="R180">SVP</text>
+<text x="11.405" y="-12.05" size="1.016" layer="21" rot="R180">SVN</text>
+<text x="11.405" y="-9.51" size="1.016" layer="21" rot="R180">IO34</text>
+<text x="11.405" y="-6.97" size="1.016" layer="21" rot="R180">IO35</text>
+<text x="11.405" y="-4.43" size="1.016" layer="21" rot="R180">IO32</text>
+<text x="11.405" y="-1.89" size="1.016" layer="21" rot="R180">IO33</text>
+<text x="11.405" y="0.65" size="1.016" layer="21" rot="R180">IO25</text>
+<text x="11.405" y="3.19" size="1.016" layer="21" rot="R180">IO26</text>
+<text x="11.405" y="5.73" size="1.016" layer="21" rot="R180">IO27</text>
+<text x="11.405" y="8.27" size="1.016" layer="21" rot="R180">IO14</text>
+<text x="11.405" y="10.81" size="1.016" layer="21" rot="R180">IO12</text>
+<text x="11.405" y="13.35" size="1.016" layer="21" rot="R180">GND</text>
+<text x="11.405" y="15.89" size="1.016" layer="21" rot="R180">IO13</text>
+<text x="11.405" y="18.43" size="1.016" layer="21" rot="R180">SD2</text>
+<text x="11.405" y="20.97" size="1.016" layer="21" rot="R180">SD3</text>
+<text x="11.405" y="23.51" size="1.016" layer="21" rot="R180">CMD</text>
+<text x="11.405" y="26.05" size="1.016" layer="21" rot="R180">5V</text>
+<text x="-11.219" y="-19.777" size="1.016" layer="21" align="top-left">GND</text>
+<text x="-11.219" y="-17.237" size="1.016" layer="21" align="top-left">IO23</text>
+<text x="-11.219" y="-14.697" size="1.016" layer="21" align="top-left">IO22</text>
+<text x="-11.219" y="-12.157" size="1.016" layer="21" align="top-left">TXD0</text>
+<text x="-11.219" y="-9.617" size="1.016" layer="21" align="top-left">RXD0</text>
+<text x="-11.219" y="-7.077" size="1.016" layer="21" align="top-left">IO21</text>
+<text x="-11.219" y="-4.537" size="1.016" layer="21" align="top-left">GND</text>
+<text x="-11.219" y="-1.997" size="1.016" layer="21" align="top-left">IO19</text>
+<text x="-11.219" y="0.543" size="1.016" layer="21" align="top-left">IO18</text>
+<text x="-11.219" y="3.083" size="1.016" layer="21" align="top-left">IO5</text>
+<text x="-11.219" y="5.623" size="1.016" layer="21" align="top-left">IO17</text>
+<text x="-11.219" y="8.163" size="1.016" layer="21" align="top-left">IO16</text>
+<text x="-11.219" y="10.703" size="1.016" layer="21" align="top-left">IO4</text>
+<text x="-11.219" y="13.243" size="1.016" layer="21" align="top-left">IO0</text>
+<text x="-11.219" y="15.783" size="1.016" layer="21" align="top-left">IO2</text>
+<text x="-11.219" y="18.323" size="1.016" layer="21" align="top-left">IO15</text>
+<text x="-11.219" y="20.863" size="1.016" layer="21" align="top-left">SD1</text>
+<text x="-11.219" y="23.403" size="1.016" layer="21" align="top-left">SD0</text>
+<text x="-11.219" y="25.943" size="1.016" layer="21" align="top-left">CLK</text>
+<wire x1="-13.97" y1="-27.94" x2="-13.97" y2="26.67" width="0.254" layer="21"/>
+<wire x1="-13.97" y1="26.67" x2="13.97" y2="26.67" width="0.254" layer="21"/>
+<wire x1="13.97" y1="26.67" x2="13.97" y2="-27.94" width="0.254" layer="21"/>
+<wire x1="13.97" y1="-27.94" x2="-13.97" y2="-27.94" width="0.254" layer="21"/>
+<text x="13.97" y="-29.21" size="1.27" layer="21" rot="R180">&gt;NAME</text>
+<text x="13.97" y="29.21" size="1.27" layer="27" rot="R180">&gt;VALUE</text>
+<wire x1="3.81" y1="-21.59" x2="3.81" y2="-26.67" width="0.4064" layer="21"/>
+<wire x1="3.81" y1="-26.67" x2="2.54" y2="-26.67" width="0.4064" layer="21"/>
+<wire x1="2.54" y1="-26.67" x2="2.54" y2="-21.59" width="0.4064" layer="21"/>
+<wire x1="2.54" y1="-21.59" x2="1.27" y2="-21.59" width="0.4064" layer="21"/>
+<wire x1="1.27" y1="-21.59" x2="1.27" y2="-26.67" width="0.4064" layer="21"/>
+<wire x1="1.27" y1="-26.67" x2="0" y2="-26.67" width="0.4064" layer="21"/>
+<wire x1="0" y1="-26.67" x2="0" y2="-21.59" width="0.4064" layer="21"/>
+<wire x1="0" y1="-21.59" x2="-1.27" y2="-21.59" width="0.4064" layer="21"/>
+<wire x1="-1.27" y1="-21.59" x2="-1.27" y2="-26.67" width="0.4064" layer="21"/>
+<wire x1="-1.27" y1="-26.67" x2="-2.54" y2="-26.67" width="0.4064" layer="21"/>
+<wire x1="-2.54" y1="-26.67" x2="-2.54" y2="-21.59" width="0.4064" layer="21"/>
+<wire x1="-2.54" y1="-26.67" x2="-3.81" y2="-26.67" width="0.4064" layer="21"/>
+<wire x1="-3.81" y1="-26.67" x2="-3.81" y2="-21.59" width="0.4064" layer="21"/>
+</package>
+</packages>
+<symbols>
+<symbol name="ESP32-DEVKITC-38">
+<wire x1="-15.24" y1="25.4" x2="15.24" y2="25.4" width="0.254" layer="94"/>
+<wire x1="15.24" y1="25.4" x2="15.24" y2="-25.4" width="0.254" layer="94"/>
+<wire x1="15.24" y1="-25.4" x2="-15.24" y2="-25.4" width="0.254" layer="94"/>
+<wire x1="-15.24" y1="-25.4" x2="-15.24" y2="25.4" width="0.254" layer="94"/>
+<pin name="3V3" x="-20.32" y="22.86" length="middle" direction="pwr"/>
+<pin name="EN" x="-20.32" y="20.32" length="middle"/>
+<pin name="SVP" x="-20.32" y="17.78" length="middle" direction="in"/>
+<pin name="SVN" x="-20.32" y="15.24" length="middle" direction="in"/>
+<pin name="IO34" x="-20.32" y="12.7" length="middle" direction="in"/>
+<pin name="IO35" x="-20.32" y="10.16" length="middle" direction="in"/>
+<pin name="IO32" x="-20.32" y="7.62" length="middle"/>
+<pin name="IO33" x="-20.32" y="5.08" length="middle"/>
+<pin name="IO25" x="-20.32" y="2.54" length="middle"/>
+<pin name="IO26" x="-20.32" y="0" length="middle"/>
+<pin name="IO27" x="-20.32" y="-2.54" length="middle"/>
+<pin name="IO14" x="-20.32" y="-5.08" length="middle"/>
+<pin name="IO12" x="-20.32" y="-7.62" length="middle"/>
+<pin name="GND@14" x="-20.32" y="-10.16" length="middle" direction="pwr"/>
+<pin name="IO13" x="-20.32" y="-12.7" length="middle"/>
+<pin name="SD2" x="-20.32" y="-15.24" length="middle"/>
+<pin name="SD3" x="-20.32" y="-17.78" length="middle"/>
+<pin name="CMD" x="-20.32" y="-20.32" length="middle"/>
+<pin name="5V" x="-20.32" y="-22.86" length="middle" direction="pwr"/>
+<pin name="CLK" x="20.32" y="-22.86" length="middle" rot="R180"/>
+<pin name="SD0" x="20.32" y="-20.32" length="middle" rot="R180"/>
+<pin name="SD1" x="20.32" y="-17.78" length="middle" rot="R180"/>
+<pin name="IO15" x="20.32" y="-15.24" length="middle" rot="R180"/>
+<pin name="IO2" x="20.32" y="-12.7" length="middle" rot="R180"/>
+<pin name="IO0" x="20.32" y="-10.16" length="middle" rot="R180"/>
+<pin name="IO4" x="20.32" y="-7.62" length="middle" rot="R180"/>
+<pin name="IO16" x="20.32" y="-5.08" length="middle" rot="R180"/>
+<pin name="IO17" x="20.32" y="-2.54" length="middle" rot="R180"/>
+<pin name="IO5" x="20.32" y="0" length="middle" rot="R180"/>
+<pin name="IO18" x="20.32" y="2.54" length="middle" rot="R180"/>
+<pin name="IO19" x="20.32" y="5.08" length="middle" rot="R180"/>
+<pin name="GND@32" x="20.32" y="7.62" length="middle" direction="pwr" rot="R180"/>
+<pin name="IO21" x="20.32" y="10.16" length="middle" rot="R180"/>
+<pin name="RXD0" x="20.32" y="12.7" length="middle" rot="R180"/>
+<pin name="TXD0" x="20.32" y="15.24" length="middle" rot="R180"/>
+<pin name="IO22" x="20.32" y="17.78" length="middle" rot="R180"/>
+<pin name="IO23" x="20.32" y="20.32" length="middle" rot="R180"/>
+<pin name="GND@38" x="20.32" y="22.86" length="middle" direction="pwr" rot="R180"/>
+<text x="-15.24" y="26.67" size="1.27" layer="95">&gt;NAME</text>
+<text x="-15.24" y="-27.94" size="1.27" layer="96">&gt;VALUE</text>
+</symbol>
+</symbols>
+<devicesets>
+<deviceset name="ESP32-DEVKITC-38" prefix="U">
+<description>General Dev Kit Board For Esp-Wroom-32. This is the wider 38 pin version for which there was no accurate footprint available on the net.</description>
+<gates>
+<gate name="G$1" symbol="ESP32-DEVKITC-38" x="0" y="0"/>
+</gates>
+<devices>
+<device name="" package="ESP32-DEVKITC-38">
+<connects>
+<connect gate="G$1" pin="3V3" pad="1"/>
+<connect gate="G$1" pin="5V" pad="19"/>
+<connect gate="G$1" pin="CLK" pad="20"/>
+<connect gate="G$1" pin="CMD" pad="18"/>
+<connect gate="G$1" pin="EN" pad="2"/>
+<connect gate="G$1" pin="GND@14" pad="14"/>
+<connect gate="G$1" pin="GND@32" pad="32"/>
+<connect gate="G$1" pin="GND@38" pad="38"/>
+<connect gate="G$1" pin="IO0" pad="25"/>
+<connect gate="G$1" pin="IO12" pad="13"/>
+<connect gate="G$1" pin="IO13" pad="15"/>
+<connect gate="G$1" pin="IO14" pad="12"/>
+<connect gate="G$1" pin="IO15" pad="23"/>
+<connect gate="G$1" pin="IO16" pad="27"/>
+<connect gate="G$1" pin="IO17" pad="28"/>
+<connect gate="G$1" pin="IO18" pad="30"/>
+<connect gate="G$1" pin="IO19" pad="31"/>
+<connect gate="G$1" pin="IO2" pad="24"/>
+<connect gate="G$1" pin="IO21" pad="33"/>
+<connect gate="G$1" pin="IO22" pad="36"/>
+<connect gate="G$1" pin="IO23" pad="37"/>
+<connect gate="G$1" pin="IO25" pad="9"/>
+<connect gate="G$1" pin="IO26" pad="10"/>
+<connect gate="G$1" pin="IO27" pad="11"/>
+<connect gate="G$1" pin="IO32" pad="7"/>
+<connect gate="G$1" pin="IO33" pad="8"/>
+<connect gate="G$1" pin="IO34" pad="5"/>
+<connect gate="G$1" pin="IO35" pad="6"/>
+<connect gate="G$1" pin="IO4" pad="26"/>
+<connect gate="G$1" pin="IO5" pad="29"/>
+<connect gate="G$1" pin="RXD0" pad="34"/>
+<connect gate="G$1" pin="SD0" pad="21"/>
+<connect gate="G$1" pin="SD1" pad="22"/>
+<connect gate="G$1" pin="SD2" pad="16"/>
+<connect gate="G$1" pin="SD3" pad="17"/>
+<connect gate="G$1" pin="SVN" pad="4"/>
+<connect gate="G$1" pin="SVP" pad="3"/>
+<connect gate="G$1" pin="TXD0" pad="35"/>
+</connects>
+<technologies>
+<technology name="">
+<attribute name="AUTHOR" value="SWEETLILMRE"/>
+</technology>
+</technologies>
+</device>
+</devices>
+</deviceset>
+</devicesets>
+</library>
+</drawing>
+</eagle>

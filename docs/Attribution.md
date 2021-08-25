@@ -21,9 +21,13 @@ SD_Card_Module.fzp:
   - https://github.com/robertoostenveld/fritzing/raw/master/SD%20Card%20Module.fzpz
 
 ## Eagle parts
-ESP32 Devkit part
+2 Pin Header part  
+For some inexplicable reason the built in Eagle libraries do not have a 2 pin male header (starts at 3 pin). This part is a rework of the 3 pin part.  
+<br>
+ESP32 Devkit part  
+Nothing on the internet that I could find had either the correct pin out or size for the dev kit board. I have created a part heavily inspired by the following:
 - https://hackaday.io/project/46280-muffsy-stereo-relay-input-selector/log/87314-esp32s-devkit-eagle-library
   - https://cdn.hackaday.io/files/462801980043520/ESP32-DEVKITC.lbr
-## PNG Images, stripboard design, schematics and board
+## Others: PNG Images, stripboard design, schematics, board and libraries
 - sweetlilmre
 

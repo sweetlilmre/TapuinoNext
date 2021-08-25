@@ -32,7 +32,7 @@ ESP32FileLoader theFileLoader;
 #if I2C_DISP_TYPE == I2C_DISP_HD44780
 LCD_HD44780 theLCD(&optionEventHander);
 #else
-OLED_1306 theLCD;
+OLED_1306 theLCD(&optionEventHander);
 #endif
 
 ESP32InputHandler theInputHandler(&optionEventHander);
