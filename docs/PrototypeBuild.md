@@ -4,13 +4,13 @@ This was built on stripboard. The design is the LochMaster folder (you can downl
 ## Stripboard Legend
 Please pay careful attention to the legend, specifically the cut track marks.
 
-![Stripboard Top View](img/Stripboard-Legend.png)  
+![Stripboard Legend](img/Stripboard-Legend.png?raw=true "Stripboard Legend")
 
 ## Stripboard Top View
-![Stripboard Top View](img/TapuinoNext-Stripboard-Top.png)
+![Stripboard Top View](img/TapuinoNext-Stripboard-Top.png?raw=true "Stripboard Top View")
 
 ## Stripboard xray view
-![Stripboard Top View](img/TapuinoNext-Stripboard-Top-xray.png)
+![Stripboard xray View](img/TapuinoNext-Stripboard-Top-xray.png?raw=true "Stripboard xray View")
 
 ## Stripboard used area view
-![Stripboard Top View](img/TapuinoNext-Stripboard-Top-used.png)
+![Stripboard Used Area View](img/TapuinoNext-Stripboard-Top-used.png?raw=true "Stripboard Used Area View")
