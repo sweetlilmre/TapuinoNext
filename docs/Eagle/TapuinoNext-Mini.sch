@@ -5840,26 +5840,26 @@ W = angled&lt;p&gt;
 </net>
 <net name="BTN_PREV/ROTB" class="0">
 <segment>
-<wire x1="53.34" y1="66.04" x2="53.34" y2="73.66" width="0.1524" layer="91"/>
-<label x="53.34" y="73.66" size="1.778" layer="95" rot="R90" xref="yes"/>
-<pinref part="U1" gate="G$1" pin="IO32"/>
-</segment>
-<segment>
-<pinref part="BUTTONS" gate="1" pin="3"/>
-<wire x1="35.56" y1="-7.62" x2="40.64" y2="-7.62" width="0.1524" layer="91"/>
-<label x="40.64" y="-7.62" size="1.778" layer="95" xref="yes"/>
-</segment>
-</net>
-<net name="BTN_SEL/ROTARY" class="0">
-<segment>
+<pinref part="U1" gate="G$1" pin="IO33"/>
 <wire x1="50.8" y1="66.04" x2="50.8" y2="73.66" width="0.1524" layer="91"/>
 <label x="50.8" y="73.66" size="1.778" layer="95" rot="R90" xref="yes"/>
-<pinref part="U1" gate="G$1" pin="IO33"/>
 </segment>
 <segment>
 <pinref part="BUTTONS" gate="1" pin="2"/>
 <wire x1="35.56" y1="-10.16" x2="40.64" y2="-10.16" width="0.1524" layer="91"/>
 <label x="40.64" y="-10.16" size="1.778" layer="95" xref="yes"/>
+</segment>
+</net>
+<net name="BTN_SEL/ROTARY" class="0">
+<segment>
+<pinref part="U1" gate="G$1" pin="IO32"/>
+<wire x1="53.34" y1="66.04" x2="53.34" y2="73.66" width="0.1524" layer="91"/>
+<label x="53.34" y="73.66" size="1.778" layer="95" rot="R90" xref="yes"/>
+</segment>
+<segment>
+<pinref part="BUTTONS" gate="1" pin="3"/>
+<wire x1="35.56" y1="-7.62" x2="40.64" y2="-7.62" width="0.1524" layer="91"/>
+<label x="40.64" y="-7.62" size="1.778" layer="95" xref="yes"/>
 </segment>
 </net>
 <net name="BTN_NEXT/ROTA" class="0">

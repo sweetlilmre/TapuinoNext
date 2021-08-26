@@ -2098,16 +2098,18 @@ design rules under a new name.</description>
 <wire x1="55.89" y1="40.63" x2="55.89" y2="36.82" width="0.1524" layer="1"/>
 </signal>
 <signal name="BTN_PREV/ROTB">
-<contactref element="BUTTONS" pad="3"/>
-<contactref element="U1" pad="7"/>
-<wire x1="53.34" y1="40.64" x2="53.35" y2="40.63" width="0.1524" layer="1"/>
-<wire x1="53.35" y1="40.63" x2="53.35" y2="36.82" width="0.1524" layer="1"/>
-</signal>
-<signal name="BTN_SEL/ROTARY">
-<contactref element="BUTTONS" pad="2"/>
 <contactref element="U1" pad="8"/>
+<contactref element="BUTTONS" pad="2"/>
+<wire x1="50.8" y1="40.64" x2="50.81" y2="40.63" width="0.1524" layer="16"/>
 <wire x1="50.8" y1="40.64" x2="50.81" y2="40.63" width="0.1524" layer="1"/>
 <wire x1="50.81" y1="40.63" x2="50.81" y2="36.82" width="0.1524" layer="1"/>
+</signal>
+<signal name="BTN_SEL/ROTARY">
+<contactref element="U1" pad="7"/>
+<contactref element="BUTTONS" pad="3"/>
+<wire x1="53.34" y1="40.64" x2="53.35" y2="40.63" width="0.1524" layer="16"/>
+<wire x1="53.34" y1="40.64" x2="53.35" y2="40.63" width="0.1524" layer="1"/>
+<wire x1="53.35" y1="40.63" x2="53.35" y2="36.82" width="0.1524" layer="1"/>
 </signal>
 <signal name="BTN_NEXT/ROTA">
 <contactref element="BUTTONS" pad="1"/>
