@@ -2,7 +2,8 @@
 
 ## Intro
 
-If you can see this, welcome to the TapuinoNext alpha.
+Welcome to the TapuinoNext alpha.  
+
 Most of the code has been written and tested to a fair extent, but there are bound to be loads of bugs.
 Please report bugs as issues against the repo. If you have fixes, please submit these as a pull request.
 I could really use some help with documentation in markdown format if you would like to contribute in that way.
@@ -11,12 +12,20 @@ I could really use some help with documentation in markdown format if you would 
 I haven't had time to document the hardware to the level I would like.
 At this point in time, you are pretty much on your own, apart from the schematic in the docs folder.
 
+UPDATE:
+- "instructions" to build a stripboard prototype are available at [Prototype Build](docs/PrototypeBuild.md)
+- schematics and board designs for reference implementations are available in the [Eagle](docs/Eagle) folder. **NB: THESE ARE UNTESTED**
+
 The BOM for the TapuinoNext is:
 - ESP32 Devkit equivalent: e.g. https://www.banggood.com/ESP32-WiFi-+-bluetooth-Development-Board-Ultra-Low-Power-Consumption-Dual-Core-ESP-32-ESP-32S-Similar-ESP8266-Geekcreit-for-Arduino-products-that-work-with-official-Arduino-boards-p-1175488.html
 
 ![ESP32 Dev Module](docs/img/ESP32_Dev_Module.png?raw=true "SD Card Adapter")
 
-- 1k resistor, 2k resistor (voltage divider)
+- resistors:
+  - (voltage divider)
+    - 1k5
+    - 3k3
+  - 100 Ohm (Recording LED current limiter)
 - Rotary encoder KY-040: e.g. https://www.banggood.com/5Pcs-5V-KY-040-Rotary-Encoder-Module-AVR-PIC-p-951151.html
 
 ![KY-040 Rotary Encoder](docs/img/Rotary_Encoder.png?raw=true "KY-040 Rotary Encoder")

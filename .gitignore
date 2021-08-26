@@ -18,10 +18,6 @@
 *.dylib
 *.dll
 
-# Fortran module files
-*.mod
-*.smod
-
 # Compiled Static libraries
 *.lai
 *.la
@@ -36,12 +32,17 @@
 # Analysis
 *.map
 
-#vscode
+# vscode
 .vscode/*
 
-#eagle
+# Eagle
 *.b\#*
 *.s\#*
 *.l\#*
 
+# LochMaster
+*.OLD
+*.BAK
+
+# Allow board configs outside of source control
 include/config-user.h
