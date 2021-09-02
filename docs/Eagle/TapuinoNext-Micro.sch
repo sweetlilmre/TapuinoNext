@@ -5750,14 +5750,14 @@ W = angled&lt;p&gt;
 <label x="40.64" y="0" size="1.778" layer="95" xref="yes"/>
 </segment>
 <segment>
-<pinref part="SD_CARD" gate="G$1" pin="5"/>
-<wire x1="-15.24" y1="0" x2="-10.16" y2="0" width="0.1524" layer="91"/>
-<label x="-10.16" y="0" size="1.778" layer="95" xref="yes"/>
-</segment>
-<segment>
 <wire x1="91.44" y1="68.58" x2="91.44" y2="53.34" width="0.1524" layer="91"/>
 <label x="91.44" y="53.34" size="1.778" layer="95" rot="R270" xref="yes"/>
 <pinref part="REC_LED" gate="G$1" pin="2"/>
+</segment>
+<segment>
+<pinref part="SD_CARD" gate="G$1" pin="4"/>
+<wire x1="-15.24" y1="-2.54" x2="-10.16" y2="-2.54" width="0.1524" layer="91"/>
+<label x="-10.16" y="-2.54" size="1.778" layer="95" xref="yes"/>
 </segment>
 </net>
 <net name="C64READ" class="0">
@@ -5801,9 +5801,9 @@ W = angled&lt;p&gt;
 <label x="40.64" y="-2.54" size="1.778" layer="95" xref="yes"/>
 </segment>
 <segment>
-<pinref part="SD_CARD" gate="G$1" pin="4"/>
-<wire x1="-15.24" y1="-2.54" x2="-10.16" y2="-2.54" width="0.1524" layer="91"/>
-<label x="-10.16" y="-2.54" size="1.778" layer="95" xref="yes"/>
+<pinref part="SD_CARD" gate="G$1" pin="2"/>
+<wire x1="-15.24" y1="-7.62" x2="-10.16" y2="-7.62" width="0.1524" layer="91"/>
+<label x="-10.16" y="-7.62" size="1.778" layer="95" xref="yes"/>
 </segment>
 </net>
 <net name="SDDO" class="0">
@@ -5813,9 +5813,9 @@ W = angled&lt;p&gt;
 <pinref part="U1" gate="G$1" pin="IO2"/>
 </segment>
 <segment>
-<pinref part="SD_CARD" gate="G$1" pin="2"/>
-<wire x1="-15.24" y1="-7.62" x2="-10.16" y2="-7.62" width="0.1524" layer="91"/>
-<label x="-10.16" y="-7.62" size="1.778" layer="95" xref="yes"/>
+<pinref part="SD_CARD" gate="G$1" pin="5"/>
+<wire x1="-15.24" y1="0" x2="-10.16" y2="0" width="0.1524" layer="91"/>
+<label x="-10.16" y="0" size="1.778" layer="95" xref="yes"/>
 </segment>
 </net>
 <net name="SDCLK" class="0">

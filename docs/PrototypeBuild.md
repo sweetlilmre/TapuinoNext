@@ -1,9 +1,9 @@
 # The first working prototype
-This was built on stripboard. The design is the LochMaster folder (you can download the LochMaster demo for free IIRC).
+This was built on stripboard. The design is in the LochMaster folder (you can download the LochMaster demo for free IIRC).
 
 
 ## Stripboard Legend
-Please pay careful attention to the legend, specifically the cut track marks.
+Please pay careful attention to the legend, specifically the cut track marks.  
 ![Stripboard Legend](img/Stripboard-Legend.PNG?raw=true "Stripboard Legend")
 
 ## Stripboard Top View
