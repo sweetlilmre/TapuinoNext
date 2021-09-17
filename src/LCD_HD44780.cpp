@@ -68,6 +68,11 @@ void LCD_HD44780::OnChange(OptionTagId tag, IOptionType* option)
     {
         case OptionTagId::Backlight:
         {
+            if (option->GetType() != ConfigOptionType::ConfigToggle)
+            {
+                Serial.println("ERROR! Incorrect option type passed to LCD_HD44780::OnChange!");
+                return;
+            }
             ToggleOption* tog = (ToggleOption*) option;
             tog->GetValue() ? Backlight() : NoBacklight();
             break;

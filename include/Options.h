@@ -29,6 +29,6 @@ namespace TapuinoNext
         const char* TagIdToString(OptionTagId id);
         FileLoader* fileLoader;
         MenuHandler* menuHandler;
-        IOptionType* allOptions[(uint8_t) OptionTagId::LAST];
+        std::vector<IOptionType*> allOptions;
     };
 } // namespace TapuinoNext

@@ -84,11 +84,12 @@ int MenuHandler::Display(TheMenu* rootMenu)
 
                     case MenuEntryType::ValueEntry:
                     {
-                        if (curEntry->data.valueOption != NULL)
+                        ValueOption* valOpt = curEntry->data.valueOption;
+                        if (valOpt != NULL)
                         {
-                            if (InputResponse::Select == DisplayValue(curEntry->text, curEntry->data.valueOption))
+                            if (InputResponse::Select == DisplayValue(curEntry->text, valOpt))
                             {
-                                curEntry->data.valueOption->Commit();
+                                valOpt->Commit();
                             }
                             utils->Title(rootMenu->header);
                         }
@@ -97,11 +98,12 @@ int MenuHandler::Display(TheMenu* rootMenu)
 
                     case MenuEntryType::ToggleEntry:
                     {
-                        if (curEntry->data.toggleOption != NULL)
+                        ToggleOption* togOpt = curEntry->data.toggleOption;
+                        if (togOpt != NULL)
                         {
-                            if (InputResponse::Select == DisplayToggle(curEntry->text, curEntry->data.toggleOption))
+                            if (InputResponse::Select == DisplayToggle(curEntry->text, togOpt))
                             {
-                                curEntry->data.valueOption->Commit();
+                                togOpt->Commit();
                             }
                             utils->Title(rootMenu->header);
                         }
@@ -110,11 +112,13 @@ int MenuHandler::Display(TheMenu* rootMenu)
 
                     case MenuEntryType::EnumEntry:
                     {
-                        if (curEntry->data.enumOption != NULL)
+                        EnumOption* enumOpt = curEntry->data.enumOption;
+
+                        if (enumOpt != NULL)
                         {
-                            if (InputResponse::Select == DisplayEnum(curEntry->text, curEntry->data.enumOption))
+                            if (InputResponse::Select == DisplayEnum(curEntry->text, enumOpt))
                             {
-                                curEntry->data.valueOption->Commit();
+                                enumOpt->Commit();
                             }
                             utils->Title(rootMenu->header);
                         }

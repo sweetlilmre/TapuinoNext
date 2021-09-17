@@ -39,15 +39,14 @@ Options::Options(FileLoader* fileLoader, IChangeNotify* notify, MenuHandler* men
       fileLoader(fileLoader),
       menuHandler(menuHandler)
 {
-    int index = 0;
-    allOptions[index++] = &btnHoldTime;
-    allOptions[index++] = &btnClickTime;
-    allOptions[index++] = &tickerTime;
-    allOptions[index++] = &tickerHoldTime;
-    allOptions[index++] = &ntscPAL;
-    allOptions[index++] = &autoPlay;
-    allOptions[index++] = &backlight;
-    allOptions[index++] = &machineType;
+    allOptions.push_back(&btnHoldTime);
+    allOptions.push_back(&btnClickTime);
+    allOptions.push_back(&tickerTime);
+    allOptions.push_back(&tickerHoldTime);
+    allOptions.push_back(&ntscPAL);
+    allOptions.push_back(&autoPlay);
+    allOptions.push_back(&backlight);
+    allOptions.push_back(&machineType);
 
     MenuHandler::LinkSubMenu(&optionsMenu, 0, &optionsInputMenu);
     MenuHandler::LinkSubMenu(&optionsMenu, 1, &optionsMachineMenu);
@@ -110,11 +109,10 @@ void Options::LoadOptions()
 
     if (ErrorCodes::OK == fileLoader->OpenFile("/TapuinoNext.cfg", configFile))
     {
-        int numOptions = sizeof(allOptions) / sizeof(IOptionType*);
         while (configFile.available())
         {
             memset(buf, 0, 256);
-            configFile.readBytesUntil('\n', buf, 256);
+            configFile.readBytesUntil('\n', buf, 255);
             Serial.println(buf);
             char* tagChars = buf;
             char* valChars = strrchr(buf, ':');
@@ -122,40 +120,46 @@ void Options::LoadOptions()
             {
                 continue;
             }
-            *valChars++ = 0;
-            String tagStr = tagChars;
-            tagStr.trim();
-            String valStr = valChars;
-            valStr.trim();
-            Serial.println(tagStr.c_str());
-            Serial.println(valStr.c_str());
 
-            for (int i = 0; i < numOptions; i++)
+            // terminate
+            *valChars++ = 0;
+            // and trim
+            while (*valChars != '\0' && (*valChars == ' ' || *valChars == '\t'))
+                valChars++;
+
+            Serial.println(tagChars);
+            Serial.println(valChars);
+
+            for (int i = 0; i < allOptions.size(); i++)
             {
                 IOptionType* opt = allOptions[i];
-                if (0 == strcmp(tagStr.c_str(), TagIdToString(opt->GetTag())))
+                const char* szTag = TagIdToString(opt->GetTag());
+                if (0 == strcmp(tagChars, szTag))
                 {
-                    Serial.println("found tag");
+                    Serial.printf("Found tag (%s): ", szTag);
                     switch (opt->GetType())
                     {
                         case ConfigOptionType::ConfigValue:
                         {
+                            Serial.print("ValueOption ");
                             ValueOption* optVal = (ValueOption*) opt;
-                            optVal->SetValue((uint32_t) atoi(valStr.c_str()));
+                            optVal->SetValue((uint32_t) atoi(valChars));
                             optVal->Commit();
                         }
                         break;
                         case ConfigOptionType::ConfigToggle:
                         {
+                            Serial.print("ToggleOption ");
                             ToggleOption* optTog = (ToggleOption*) opt;
-                            optTog->SetValue(valStr.charAt(0) == 't');
+                            optTog->SetValue(valChars[0] == 't');
                             optTog->Commit();
                         }
                         break;
                         case ConfigOptionType::ConfigEnum:
                         {
+                            Serial.print("EnumOption ");
                             EnumOption* optEnum = (EnumOption*) opt;
-                            optEnum->ParseValue(valStr.c_str());
+                            optEnum->ParseValue(valChars);
                             optEnum->Commit();
                             break;
                         }
@@ -173,11 +177,10 @@ void Options::SaveOptions()
     Serial.println("saving options");
     if (ErrorCodes::OK == fileLoader->CreateFile("/TapuinoNext.cfg", configFile))
     {
-        Serial.println("file opened");
-        int numOptions = sizeof(allOptions) / sizeof(IOptionType*);
         char buf[256];
-        for (int i = 0; i < numOptions; i++)
+        for (int i = 0; i < allOptions.size(); i++)
         {
+            memset(buf, 0, 256);
             IOptionType* opt = allOptions[i];
             const char* tagString = TagIdToString(opt->GetTag());
             switch (opt->GetType())
@@ -185,19 +188,19 @@ void Options::SaveOptions()
                 case ConfigOptionType::ConfigValue:
                 {
                     ValueOption* optVal = (ValueOption*) opt;
-                    snprintf(buf, 256, "%s: %u\n", tagString, optVal->GetValue());
+                    snprintf(buf, 255, "%s: %u\n", tagString, optVal->GetValue());
                 }
                 break;
                 case ConfigOptionType::ConfigToggle:
                 {
                     ToggleOption* optTog = (ToggleOption*) opt;
-                    snprintf(buf, 256, "%s: %s\n", tagString, optTog->GetValue() ? "true" : "false");
+                    snprintf(buf, 255, "%s: %s\n", tagString, optTog->GetValue() ? "true" : "false");
                 }
                 break;
                 case ConfigOptionType::ConfigEnum:
                 {
                     EnumOption* optEnum = (EnumOption*) opt;
-                    snprintf(buf, 256, "%s: %s\n", tagString, optEnum->GetEnumText());
+                    snprintf(buf, 255, "%s: %s\n", tagString, optEnum->GetEnumText());
                     break;
                 }
             }

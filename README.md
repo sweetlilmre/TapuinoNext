@@ -14,7 +14,9 @@ At this point in time, you are pretty much on your own, apart from the schematic
 
 UPDATE:
 - "instructions" to build a stripboard prototype are available at [Prototype Build](docs/PrototypeBuild.md)
-- schematics and board designs for reference implementations are available in the [Eagle](docs/Eagle) folder. **NB: THESE ARE UNTESTED**
+- schematics and board designs for reference implementations are available in the [Eagle](docs/Eagle) folder.
+- the mini board has been produced and tested successfully!
+- **NB: the micro board has not**
 
 The BOM for the TapuinoNext is:
 - ESP32 Devkit equivalent: e.g. https://www.banggood.com/ESP32-WiFi-+-bluetooth-Development-Board-Ultra-Low-Power-Consumption-Dual-Core-ESP-32-ESP-32S-Similar-ESP8266-Geekcreit-for-Arduino-products-that-work-with-official-Arduino-boards-p-1175488.html
@@ -49,8 +51,9 @@ Wire this all up according to the schematic and flash the firmware.
 Probably the easiest way to handle this at the moment is to:
 - install VS Code
 - install Platformio on top of that
-- install the Espressif 32 platform or start a new project and choose "Espressif ESP32 Dev Module" as the board, with "Arduino" as the framework.
+- install the Espressif 32 platform or start a new project and choose "Espressif ESP32 Dev Module" as the board, with "Arduino" as the framework
 - clone the TapuinoNext repository
+- you will need to create a ***config-user.h*** file in the include directory. This is currently used to specify which of the 2 supported displays you have and what the correct I2C address for the display is. A sample ***config-user.h.example*** has beem provided
 - point VS code to the directory you cloned the repo into and upload to the board (I'm assuming that you know how to do all of this)
 
 ## Attribution
