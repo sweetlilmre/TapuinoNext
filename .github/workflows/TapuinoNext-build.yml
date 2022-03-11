@@ -4,11 +4,13 @@ name: TapuinoCI
 # events but only for the main branch, and now hopefully for tags
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
     tags:
-      - '*'
+      - '**'
   pull_request:
-    branches: [ main ]
+    branches:
+      - main
 
 jobs:
   build:
