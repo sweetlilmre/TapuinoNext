@@ -10,9 +10,10 @@ using namespace TapuinoNext;
 MenuEntry optionsMenuEntries[] = {
     {MenuEntryType::SubMenuEntry, S_INPUT_AND_UI, NULL},
     {MenuEntryType::SubMenuEntry, S_MACHINE, NULL},
+    {MenuEntryType::ActionEntry, S_UPDATE, NULL},
 };
 
-TheMenu optionsMenu = {S_OPTIONS, (MenuEntry*) optionsMenuEntries, 2, 0, NULL};
+TheMenu optionsMenu = {S_OPTIONS, (MenuEntry*) optionsMenuEntries, 3, 0, NULL};
 
 MenuEntry optionsInputMenuEntries[] = {
     {MenuEntryType::ValueEntry, S_BTN_CLICK_TIME, NULL}, {MenuEntryType::ValueEntry, S_BTN_HOLD_TIME, NULL}, {MenuEntryType::ValueEntry, S_TICKER_TIME, NULL},
@@ -27,7 +28,7 @@ MenuEntry optionsMachineMenuEntries[] = {
 TheMenu optionsInputMenu = {S_INPUT_AND_UI, (MenuEntry*) optionsInputMenuEntries, 5, 0, &optionsMenu};
 TheMenu optionsMachineMenu = {S_MACHINE, (MenuEntry*) optionsMachineMenuEntries, 2, 0, &optionsMenu};
 
-Options::Options(FileLoader* fileLoader, IChangeNotify* notify, MenuHandler* menuHandler)
+Options::Options(FileLoader* fileLoader, IChangeNotify* notify, MenuHandler* menuHandler, ActionCallback* updateCallback)
     : btnClickTime(OptionTagId::ButtonClickTime, notify, 100, 100, 500, 10),
       btnHoldTime(OptionTagId::ButtonHoldTime, notify, 300, 500, 2000, 50),
       tickerTime(OptionTagId::TickerTime, notify, 500, 500, 2000, 50),
@@ -50,6 +51,7 @@ Options::Options(FileLoader* fileLoader, IChangeNotify* notify, MenuHandler* men
 
     MenuHandler::LinkSubMenu(&optionsMenu, 0, &optionsInputMenu);
     MenuHandler::LinkSubMenu(&optionsMenu, 1, &optionsMachineMenu);
+    MenuHandler::SetAction(optionsMenuEntries, 2, updateCallback);
 
     MenuHandler::SetValueOtion(optionsInputMenuEntries, 0, &btnClickTime);
     MenuHandler::SetValueOtion(optionsInputMenuEntries, 1, &btnHoldTime);

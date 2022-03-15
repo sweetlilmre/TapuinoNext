@@ -37,6 +37,7 @@ namespace TapuinoNext
     const char S_MAIN_MENU[] = "Main Menu";
     const char S_PLAY_MENU[] = "Play Menu";
     const char S_RECORD_MENU[] = "Record Menu";
+    const char S_UPDATE_MENU[] = "Update Menu";
     const char S_SELECT_RECORD_MODE[] = "Name mode:";
 
     const char S_INSERT_TAP[] = "Insert Tap";
@@ -50,6 +51,19 @@ namespace TapuinoNext
     const char S_OPTIONS[] = "Options";
     const char S_INPUT_AND_UI[] = "Input & UI";
     const char S_MACHINE[] = "Machine";
+    const char S_UPDATE[] = "Update FW";
+
+    // Update related strings
+    const char S_UPDATE_NOT_FOUND[] = "FW not found!";
+    const char S_UPDATE_TOO_SMALL[] = "FW too small!";
+    const char S_UPDATE_WRITTEN_OK[] = "FW write OK";
+    const char S_UPDATE_UNDERWRITE[] = "FW under write!";
+    const char S_UPDATE_WRITTEN[] = "FW written";
+    const char S_UPDATE_SUCCESS[] = "Update success!";
+    const char S_UPDATE_REBOOT[] = "Rebooting...!";
+    const char S_UPDATE_INCOMPLETE[] = "Upd incomplete!";
+    const char S_UPDATE_FAILED[] = "Update failed!";
+    const char S_NO_UPDATE_SPACE[] = "No FW space!";
 
     // Option related strings
     const char S_BTN_CLICK_TIME[] = "Btn Click Time";

@@ -11,7 +11,7 @@ namespace TapuinoNext
     class Options
     {
       public:
-        Options(FileLoader* fileLoader, IChangeNotify* notify, MenuHandler* menuHandler);
+        Options(FileLoader* fileLoader, IChangeNotify* notify, MenuHandler* menuHandler, ActionCallback* updateCallback);
         void LoadOptions();
         void SaveOptions();
         void OnAction();

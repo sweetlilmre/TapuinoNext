@@ -13,6 +13,7 @@
 #include "SD_MMC.h"
 #include "config.h"
 #include "OptionEventHandler.h"
+
 using namespace std;
 using namespace TapuinoNext;
 
@@ -23,6 +24,7 @@ using namespace TapuinoNext;
 #include "FS.h"
 #include "LCD_HD44780.h"
 #include "OLED_1306.h"
+#include "Updater.h"
 
 OptionEventHandler optionEventHander;
 
@@ -175,8 +177,9 @@ void setup()
         return;
 
     MenuHandler menu(&lcdUtils, &theInputHandler);
+    Updater updater(&lcdUtils, &theInputHandler, &theFileLoader);
 
-    Options options(&theFileLoader, &optionEventHander, &menu);
+    Options options(&theFileLoader, &optionEventHander, &menu, &updater);
 
     UtilityCollection utilityCollection(&lcdUtils, &theInputHandler, &theFileLoader, &options);
     LoadSelector lsel(&utilityCollection);
