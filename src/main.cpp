@@ -13,10 +13,10 @@
 #include "SD_MMC.h"
 #include "config.h"
 #include "OptionEventHandler.h"
+
 using namespace std;
 using namespace TapuinoNext;
 
-#ifdef ESP32
 #include "ESP32FileLoader.h"
 #include "ESP32InputHandler.h"
 #include "ESP32TapLoader.h"
@@ -24,6 +24,7 @@ using namespace TapuinoNext;
 #include "FS.h"
 #include "LCD_HD44780.h"
 #include "OLED_1306.h"
+#include "Updater.h"
 
 OptionEventHandler optionEventHander;
 
@@ -37,6 +38,9 @@ OLED_1306 theLCD(&optionEventHander);
 
 ESP32InputHandler theInputHandler(&optionEventHander);
 LCDUtils lcdUtils(&theLCD);
+
+#ifndef GIT_REV
+#define GIT_REV "0.0.1" // dummy replace by build flags python script
 #endif
 
 void testInputHander()
@@ -127,10 +131,6 @@ void testEncoderPins()
     }
 }
 
-#define TAPUINO_MAJOR_VERSION 0
-#define TAPUINO_MINOR_VERSION 2
-#define TAPUINO_BUILD_VERSION 0
-
 bool initTapuino()
 {
     Serial.begin(115200);
@@ -143,7 +143,7 @@ bool initTapuino()
     //testEncoderPins();
 
     char version[I2C_DISP_COLS + 1];
-    snprintf(version, I2C_DISP_COLS + 1, "V: %d.%d.%d", TAPUINO_MAJOR_VERSION, TAPUINO_MINOR_VERSION, TAPUINO_BUILD_VERSION);
+    snprintf(version, I2C_DISP_COLS + 1, "V: %s", GIT_REV);
     lcdUtils.Status(version);
     Serial.println(version);
     delay(2000);
@@ -177,8 +177,9 @@ void setup()
         return;
 
     MenuHandler menu(&lcdUtils, &theInputHandler);
+    Updater updater(&lcdUtils, &theInputHandler, &theFileLoader);
 
-    Options options(&theFileLoader, &optionEventHander, &menu);
+    Options options(&theFileLoader, &optionEventHander, &menu, &updater);
 
     UtilityCollection utilityCollection(&lcdUtils, &theInputHandler, &theFileLoader, &options);
     LoadSelector lsel(&utilityCollection);
