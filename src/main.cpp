@@ -26,6 +26,8 @@ using namespace TapuinoNext;
 #include "OLED_1306.h"
 #include "Updater.h"
 
+#include "Version.h"
+
 OptionEventHandler optionEventHander;
 
 ESP32FileLoader theFileLoader;
@@ -38,10 +40,6 @@ OLED_1306 theLCD(&optionEventHander);
 
 ESP32InputHandler theInputHandler(&optionEventHander);
 LCDUtils lcdUtils(&theLCD);
-
-#ifndef GIT_REV
-#define GIT_REV "0.0.0" // dummy value replaced by build flags python script
-#endif
 
 void testInputHander()
 {
@@ -143,7 +141,7 @@ bool initTapuino()
     //testEncoderPins();
 
     char version[I2C_DISP_COLS + 1];
-    snprintf(version, I2C_DISP_COLS + 1, "%s", GIT_REV);
+    snprintf(version, I2C_DISP_COLS + 1, "%s", FW_VERSION);
     lcdUtils.Status(version);
     Serial.println(version);
     delay(2000);
