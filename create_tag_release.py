@@ -43,10 +43,17 @@ try:
         else:
             pretty_exit("Quitting due to pending changes")
 
-    not_synced = git_check("cherry", "-v")
-    if not_synced != "":
+    while True:
+        not_synced = git_check("cherry", "-v")
+        if not_synced == "":
+            print("No pending commits, proceeding...");
+            break
+
         print("The following commits have not been pushed to main:\n" + not_synced)
-        exit(1)
+        if get_confirmation("Would you like to push these commits?"):
+            git_check("push", "origin", "main")
+        else:
+            pretty_exit("Quitting due to pending commits")
 
     print("Everything seems to be ready for a release, let's go!")
 
