@@ -34,7 +34,7 @@ try:
     while True:
         changes_pending = git_check("status", "--porcelain")
         if changes_pending == "":
-            print("No pending changes, proceeding...");
+            print("No pending changes, proceeding...")
             break
 
         print("You have the following unstaged or uncommitted files:\n" + changes_pending)
@@ -46,7 +46,7 @@ try:
     while True:
         not_synced = git_check("cherry", "-v")
         if not_synced == "":
-            print("No pending commits, proceeding...");
+            print("No pending commits, proceeding...")
             break
 
         print("The following commits have not been pushed to main:\n" + not_synced)
