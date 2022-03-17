@@ -61,8 +61,7 @@ try:
         with open(version_file_name) as versionFile:
             version = versionFile.readline().strip()
     except:
-        print("Missing 'version' file! Exiting!\n")
-        exit(1)
+        pretty_exit("Missing 'version' file! Exiting!\n")
 
     subprocess.check_output(["git", "tag", version, "main"])
     subprocess.check_output(["git", "push", "origin", version])
