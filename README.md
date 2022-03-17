@@ -1,4 +1,5 @@
 # TapuinoNext
+[![TapuinoCI](https://github.com/sweetlilmre/TapuinoNext/actions/workflows/TapuinoNext-build.yml/badge.svg)](https://github.com/sweetlilmre/TapuinoNext/actions/workflows/TapuinoNext-build.yml)
 
 ## Intro
 
