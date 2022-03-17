@@ -1,27 +1,43 @@
+import re
 import datetime
+import sys
 
-FILENAME_VERSION = 'version'
-FILENAME_VERSION_H = 'include/Version.h'
+Import("env")
 
-prefix = '0.0.'
-build_no = 0
+version_file_name = 'version'
+header_file_name = 'include/Version.h'
+
+build_no = 0;
+version = ''
 
 try:
-    with open(FILENAME_VERSION) as versionFile:
-        build_no = versionFile.readline()
-        prefix = build_no[0:build_no.rindex('.')+1]
-        build_no = int(build_no[build_no.rindex('.')+1:])
-        build_no = build_no + 1
-except:
-    build_no = 0
+    with open(version_file_name) as versionFile:
+        version = versionFile.readline()
 
-version = prefix + str(build_no)
+        p = re.compile(r"^(?P<version>(?P<major>0|[1-9]\d*)\.(?P<minor>0|[1-9]\d*)\.(?P<patch>0|[1-9]\d*)(?:-(?P<prerelease>(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?)(?:\+(?P<buildmetadata>0|[1-9]\d*))$")
+        m = p.match(version)
+        if m:
+            build_no = int(m.group("buildmetadata")) + 1
+            version = m.group("version") + "+" + str(build_no)
+            try:
+                with open(version_file_name, 'w+') as versionFile:
+                    versionFile.write(version)
+            except:
+                print ("Unable to increment version file!", file=sys.stderr)
+                env.Exit(1)
 
-with open(FILENAME_VERSION, 'w+') as versionFile:
-    versionFile.write(version)
 
+        else:
+          print ("Version file format is incorrect!", file=sys.stderr)
+          print ("Format must be: a.b.c-desc+build number", file=sys.stderr)
+          env.Exit(1)
 
-hf = """
+except Exception as e:
+    print(e)
+    print ("Version file: " + version_file_name + " is missing!", file=sys.stderr)
+    env.Exit(1)
+
+header_string = """
 #ifndef FW_BUILD_NUMBER
   #define FW_BUILD_NUMBER "{}"
 #endif
@@ -32,5 +48,11 @@ hf = """
   #define FW_BUILD_TIME "{}"
 #endif
 """.format(build_no, version, datetime.datetime.now())
-with open(FILENAME_VERSION_H, 'w+') as f:
-    f.write(hf)
+
+try:
+    with open(header_file_name, 'w+') as header_file:
+        header_file.write(header_string)
+except:
+      print ("Unable to generate version header!", file=sys.stderr)
+      env.Exit(1)
+
