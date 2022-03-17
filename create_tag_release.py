@@ -26,7 +26,7 @@ def pretty_exit(message):
 
 try:
     if git_check("branch", "--no-color", "--show-current") != "main":
-        print("This script must be run on the 'main' branch, you are on " + branch)
+        print("This script must be run on the 'main' branch, you are on: " + branch)
         exit(1)
 
     print("On the 'main' branch, proceeding...")
