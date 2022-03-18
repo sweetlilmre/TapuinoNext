@@ -54,16 +54,18 @@ namespace TapuinoNext
     const char S_UPDATE[] = "Update FW";
 
     // Update related strings
+    const char S_UPDATE_UPDATING[] = "FW updating";
     const char S_UPDATE_NOT_FOUND[] = "FW not found!";
     const char S_UPDATE_TOO_SMALL[] = "FW too small!";
     const char S_UPDATE_WRITTEN_OK[] = "FW write OK";
     const char S_UPDATE_UNDERWRITE[] = "FW under write!";
     const char S_UPDATE_WRITTEN[] = "FW written";
     const char S_UPDATE_SUCCESS[] = "Update success!";
+    const char S_UPDATE_STARTED[] = "Update started!";
     const char S_UPDATE_REBOOT[] = "Rebooting...!";
     const char S_UPDATE_INCOMPLETE[] = "Upd incomplete!";
     const char S_UPDATE_FAILED[] = "Update failed!";
-    const char S_NO_UPDATE_SPACE[] = "No FW space!";
+    const char S_UPDATE_NO_SPACE[] = "No FW space!";
 
     // Option related strings
     const char S_BTN_CLICK_TIME[] = "Btn Click Time";

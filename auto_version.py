@@ -56,3 +56,4 @@ except:
       print ("Unable to generate version header!", file=sys.stderr)
       env.Exit(1)
 
+print("Building for version: " + version + ", build: " + str(build_no))

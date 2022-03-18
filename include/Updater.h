@@ -18,5 +18,6 @@ namespace TapuinoNext
         FileLoader* fileLoader;
 
         void PerformUpdate();
+        void OnProgress(size_t progress, size_t size);
     };
 } // namespace TapuinoNext
