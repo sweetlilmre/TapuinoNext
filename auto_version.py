@@ -11,7 +11,7 @@ build_no = 0;
 version = ''
 
 try:
-    with open(version_file_name) as versionFile:
+    with open(version_file_name, newline='\n') as versionFile:
         version = versionFile.readline()
 
         p = re.compile(r"^(?P<version>(?P<major>0|[1-9]\d*)\.(?P<minor>0|[1-9]\d*)\.(?P<patch>0|[1-9]\d*)(?:-(?P<prerelease>(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?)(?:\+(?P<buildmetadata>0|[1-9]\d*))$")
@@ -20,7 +20,7 @@ try:
             build_no = int(m.group("buildmetadata")) + 1
             version = m.group("version") + "+" + str(build_no)
             try:
-                with open(version_file_name, 'w+') as versionFile:
+                with open(version_file_name, 'w+', newline='\n') as versionFile:
                     versionFile.write(version)
             except:
                 print ("Unable to increment version file!", file=sys.stderr)
@@ -50,7 +50,7 @@ header_string = """
 """.format(build_no, version, datetime.datetime.now())
 
 try:
-    with open(header_file_name, 'w+') as header_file:
+    with open(header_file_name, 'w+', newline='\n') as header_file:
         header_file.write(header_string)
 except:
       print ("Unable to generate version header!", file=sys.stderr)
