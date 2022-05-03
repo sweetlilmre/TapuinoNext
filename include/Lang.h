@@ -17,6 +17,8 @@ namespace TapuinoNext
     const char S_CREATE_FAILED[] = "Create Failed!";
     const char S_COUNTER_GR_SIZE[] = "Count > size!";
     const char S_FILE_ERROR[] = "File Error!";
+    const char S_FILE_WRITE_ERROR[] = "File Write Err!";
+    const char S_FILE_EXISTS_ERROR[] = "File Exists Err!";
     const char S_CANT_CREATE_DIR[] = "Can't create dir";
     const char S_NO_FILES_FOUND[] = "No Files Found!";
     const char S_FILE_NOT_FOUND[] = "File Not Found!";

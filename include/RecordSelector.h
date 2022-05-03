@@ -13,7 +13,7 @@ namespace TapuinoNext
         void OnAction();
         ErrorCodes ManualFilename(File& recTap);
         ErrorCodes AutoFileName(File& recTap);
-        bool ManualAutoMenu(File tapFile);
+        bool ManualAutoMenu(File& tapFile);
 
       private:
         UtilityCollection* utilityCollection;

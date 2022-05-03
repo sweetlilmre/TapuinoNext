@@ -133,11 +133,19 @@ ErrorCodes TapRecorder::CreateTap(File tapFile)
     tapInfo.video = (uint8_t) (options->ntscPAL.GetValue() ? VIDEO_MODE::NSTC : VIDEO_MODE::PAL);
     tapInfo.platform = (uint8_t) machineType;
 
-    if (tapFile.write((uint8_t*) &tap_magic, TAP_HEADER_MAGIC_LENGTH) != TAP_HEADER_MAGIC_LENGTH)
-        return ErrorCodes::FILE_ERROR;
+    size_t written = tapFile.write((uint8_t*) &tap_magic, TAP_HEADER_MAGIC_LENGTH);
+    if (written != TAP_HEADER_MAGIC_LENGTH)
+    {
+        Serial.printf("unable to write TAP magic! Length: %d\n", written);
+        return ErrorCodes::FILE_WRITE_ERROR;
+    }
 
-    if (tapFile.write((uint8_t*) &tapInfo, TAP_HEADER_DATA_LENGTH) != TAP_HEADER_DATA_LENGTH)
-        return ErrorCodes::FILE_ERROR;
+    written = tapFile.write((uint8_t*) &tapInfo, TAP_HEADER_DATA_LENGTH);
+    if (written != TAP_HEADER_DATA_LENGTH)
+    {
+        Serial.printf("unable to write TAP header! Length: %d\n", written);
+        return ErrorCodes::FILE_WRITE_ERROR;
+    }
 
     SetupCycleTiming();
 

@@ -20,7 +20,8 @@ void Updater::OnProgress(size_t progress, size_t size)
 {
     float prog = ((float) progress / (float) size) * 100;
     char buf[I2C_DISP_COLS + 1];
-    snprintf(buf, I2C_DISP_COLS + 1, "progress: %d%%", (int) prog);
+    memset(buf, 0, I2C_DISP_COLS + 1);
+    snprintf(buf, I2C_DISP_COLS, "progress: %d%%", (int) prog);
     lcdUtils->Status(buf);
 }
 

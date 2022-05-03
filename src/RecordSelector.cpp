@@ -20,8 +20,8 @@ RecordSelector::~RecordSelector()
 
 ErrorCodes RecordSelector::ManualFilename(File& recTap)
 {
-    // max filename length is: displayable space + extension (".tap") + 1 for null terminator
-#define MAX_FILENAME_LEN I2C_DISP_COLS + 4 + 1
+    // max filename length is: sub directory ("/recorded/") + displayable space + extension (".tap") + 1 for null terminator
+#define MAX_FILENAME_LEN 10 + I2C_DISP_COLS + 4 + 1
     enum class CursorMode : uint8_t
     {
         Move,
@@ -99,12 +99,22 @@ ErrorCodes RecordSelector::ManualFilename(File& recTap)
                     }
                     else
                     {
-                        strcpy(fileNameBuffer, s.c_str());
+                        strcpy(fileNameBuffer, "/recorded/");
+                        strcat(fileNameBuffer, s.c_str());
                         strcat(fileNameBuffer, ".tap");
-                        Serial.println(fileNameBuffer);
-                        // remove when done testing
-                        memset(fileNameBuffer, 32, MAX_FILENAME_LEN - 1);
-                        fileNameBuffer[I2C_DISP_COLS] = 0;
+                        Serial.printf("Recording to manually named file: %s\n", fileNameBuffer);
+                        if (!fileLoader->FileExists(fileNameBuffer))
+                        {
+                            ErrorCodes ret = fileLoader->CreateFile(fileNameBuffer, recTap);
+                            Serial.printf("Creating recording at: %s: ErrorCodes: %d\n", fileNameBuffer, (int) ret);
+                            if (ret != ErrorCodes::OK)
+                            {
+                                lcdUtils->Error(S_RECORDING_FAIL, ret);
+                            }
+                            return (ret);
+                        }
+                        lcdUtils->Error(S_RECORDING_FAIL, ErrorCodes::FILE_EXISTS_ERROR);
+                        return (ErrorCodes::FILE_ERROR);
                     }
                 }
                 else if (cursorPos < (I2C_DISP_COLS - 1))
@@ -204,15 +214,17 @@ ErrorCodes RecordSelector::ManualFilename(File& recTap)
 
 ErrorCodes RecordSelector::AutoFileName(File& recTap)
 {
-    char recName[25];
+#define REC_NAME_SIZE 25
+    char recName[REC_NAME_SIZE + 1];
+    memset(recName, 0, REC_NAME_SIZE + 1);
 
     for (uint8_t nameIndex = 0; nameIndex < 255; nameIndex++)
     {
-        snprintf(recName, 25, "/recorded/rec%03d.tap", nameIndex);
+        snprintf(recName, REC_NAME_SIZE, "/recorded/rec%03d.tap", nameIndex);
         if (!fileLoader->FileExists(recName))
         {
             ErrorCodes ret = fileLoader->CreateFile(recName, recTap);
-            Serial.printf("%s: %d", recName, (int) ret);
+            Serial.printf("Creating recording at: %s: ErrorCodes: %d\n", recName, (int) ret);
             if (ret != ErrorCodes::OK)
             {
                 lcdUtils->Error(S_RECORDING_FAIL, ret);
@@ -224,7 +236,7 @@ ErrorCodes RecordSelector::AutoFileName(File& recTap)
     return (ErrorCodes::OUT_OF_RANGE);
 }
 
-bool RecordSelector::ManualAutoMenu(File tapFile)
+bool RecordSelector::ManualAutoMenu(File& tapFile)
 {
     MenuHandler menu(lcdUtils, inputHandler);
 

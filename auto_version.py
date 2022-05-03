@@ -1,14 +1,21 @@
 import re
 import datetime
 import sys
+import tapuino_common as tc
 
 Import("env")
 
 version_file_name = 'version'
 header_file_name = 'include/Version.h'
 
-build_no = 0;
+build_no = 0
 version = ''
+
+print("********** AUTO VERSION **********")
+cur_branch = tc.git_check("branch", "--no-color", "--show-current")
+if cur_branch != "main":
+    tc.pretty_exit_ok("This script will only increment the version on the 'main' branch, you are on: " + cur_branch)
+
 
 try:
     with open(version_file_name, newline='\n') as versionFile:
@@ -23,19 +30,16 @@ try:
                 with open(version_file_name, 'w+', newline='\n') as versionFile:
                     versionFile.write(version)
             except:
-                print ("Unable to increment version file!", file=sys.stderr)
-                env.Exit(1)
+                tc.pretty_exit_error("Unable to increment version file!", file=sys.stderr)
 
 
         else:
           print ("Version file format is incorrect!", file=sys.stderr)
-          print ("Format must be: a.b.c-desc+build number", file=sys.stderr)
-          env.Exit(1)
+          tc.pretty_exit_error("Format must be: a.b.c-desc+build number", file=sys.stderr)
 
 except Exception as e:
     print(e)
-    print ("Version file: " + version_file_name + " is missing!", file=sys.stderr)
-    env.Exit(1)
+    tc.pretty_exit_error("Version file: " + version_file_name + " is missing!", file=sys.stderr)
 
 header_string = """
 #ifndef FW_BUILD_NUMBER
@@ -53,7 +57,7 @@ try:
     with open(header_file_name, 'w+', newline='\n') as header_file:
         header_file.write(header_string)
 except:
-      print ("Unable to generate version header!", file=sys.stderr)
-      env.Exit(1)
+      tc.pretty_exit_error("Unable to generate version header!", file=sys.stderr)
 
 print("Building for version: " + version + ", build: " + str(build_no))
+print("********** AUTO VERSION **********")
