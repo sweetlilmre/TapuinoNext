@@ -100,7 +100,7 @@ void LCDUtils::PlayUI(bool motor, uint16_t counter, uint32_t tickerTime)
     memset(buf, 32, 8);
 
     lcd->SetCursor(I2C_DISP_COLS - 6, 0);
-    snprintf(buf, 7, "%03d %c%c", counter, motor ? 'M' : 'm', Spinner());
+    snprintf(buf, 7, "%03u %c%c", counter % 1000u, motor ? 'M' : 'm', Spinner());
     lcd->Print(buf);
 }
 
