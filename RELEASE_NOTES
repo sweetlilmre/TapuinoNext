@@ -14,3 +14,4 @@
     - changed the text for the firmware update menu to make it less confusing
     - added the spinner UI into the update progress display
     - changed the name of the firmware release to "update.bin" for ease of use
+
