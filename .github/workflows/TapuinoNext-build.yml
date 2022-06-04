@@ -18,8 +18,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-#        with:
-#          fetch-depth: 0
+        with:
+          fetch-depth: 0
         
     # Make the local_config.h file!
       - name: Add config-user.h
@@ -36,19 +36,11 @@ jobs:
           silent: false
           verbose: true
           disable-auto-clean: false
+
       - name: Release
         uses: softprops/action-gh-release@v0.1.14
         if: startsWith(github.ref, 'refs/tags/')
         with:
-          generate_release_notes: true
+          body: "[**Release Notes:**](https://github.com/sweetlilmre/TapuinoNext/blob/main/RELEASE_NOTES)"
+          # generate_release_notes: true
           files: .pio/build/esp32dev/update.bin
-
-#        uses: "marvinpinto/action-automatic-releases@latest"
-#        if: startsWith(github.ref, 'refs/tags/')
-#        with:
-#          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-#          #automatic_release_tag: "latest"
-#          prerelease: false
-#          #title: "Development Build"
-#          files: .pio/build/esp32dev/firmware.bin
-          
