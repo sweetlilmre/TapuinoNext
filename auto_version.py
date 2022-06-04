@@ -11,6 +11,8 @@ header_file_name = 'include/Version.h'
 build_no = 0
 version = ''
 
+env.Replace(PROGNAME="update")
+
 print("********** AUTO VERSION **********")
 cur_branch = tc.git_check("branch", "--no-color", "--show-current")
 if cur_branch != "main":

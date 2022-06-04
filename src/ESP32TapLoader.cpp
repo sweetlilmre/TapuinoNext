@@ -31,7 +31,7 @@ void ESP32TapLoader::HWStartTimer()
         tapSignalTimer = timerBegin(0, 40, true);
         timerAttachInterrupt(tapSignalTimer, &ESP32TapLoader::TapSignalTimerStatic, true);
         timerWrite(tapSignalTimer, 0);
-        timerAlarmWrite(tapSignalTimer, IDLE_TIMER_EXECUTE, false);
+        timerAlarmWrite(tapSignalTimer, IDLE_TIMER_EXECUTE, true);
         timerAlarmEnable(tapSignalTimer);
     }
     else
@@ -80,18 +80,17 @@ void IRAM_ATTR ESP32TapLoader::TapSignalTimer()
         {
             tapInfo.cycles += (lastSignalTime >> 1);
             lastSignalTime = signalTime = CalcSignalTime();
-            // half-wave format, point to the next signal for the 2nd half value
-            if (tapInfo.version == 2)
-            {
-                lastSignalTime = CalcSignalTime();
-            }
-
             // special marker indicating that the end of the TAP has been reached.
             if (lastSignalTime == 0xFFFFFFFF)
             {
                 processSignal = false;
                 stopped = true;
                 return;
+            }
+            // half-wave format, point to the next signal for the 2nd half value
+            if (tapInfo.version == 2)
+            {
+                lastSignalTime = CalcSignalTime();
             }
             digitalWrite(C64_READ_PIN, LOW);
         }
@@ -107,9 +106,7 @@ void IRAM_ATTR ESP32TapLoader::TapSignalTimer()
 
     if (!stopping)
     {
-        timerWrite(tapSignalTimer, 0);
-        timerAlarmWrite(tapSignalTimer, signalTime, false);
-        timerAlarmEnable(tapSignalTimer);
+        timerAlarmWrite(tapSignalTimer, signalTime, true);
     }
     else
     {

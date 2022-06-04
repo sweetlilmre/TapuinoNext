@@ -203,9 +203,8 @@ char LCDUtils::Spinner()
 {
     static uint8_t indicators[] = {'|', '/', '-', '\\'};
     static uint8_t pos = 0;
-    char ret = indicators[pos++];
-    if (pos > 3)
-        pos = 0;
+    char ret = indicators[pos];
+    pos = (pos + 1) % 4;
     return (ret);
 }
 

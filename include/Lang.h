@@ -53,7 +53,8 @@ namespace TapuinoNext
     const char S_OPTIONS[] = "Options";
     const char S_INPUT_AND_UI[] = "Input & UI";
     const char S_MACHINE[] = "Machine";
-    const char S_UPDATE[] = "Update FW";
+    const char S_UPDATE[] = "Update";
+    const char S_UPDATE_FW[] = "Update FW";
 
     // Update related strings
     const char S_UPDATE_UPDATING[] = "FW updating";

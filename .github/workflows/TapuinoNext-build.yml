@@ -41,7 +41,7 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/')
         with:
           generate_release_notes: true
-          files: .pio/build/esp32dev/firmware.bin
+          files: .pio/build/esp32dev/update.bin
 
 #        uses: "marvinpinto/action-automatic-releases@latest"
 #        if: startsWith(github.ref, 'refs/tags/')

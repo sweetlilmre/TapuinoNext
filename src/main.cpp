@@ -140,6 +140,7 @@ bool initTapuino()
     Serial.println("TapuinoNext");
 
     //testEncoderPins();
+    theInputHandler.Init();
 
     char version[I2C_DISP_COLS + 1];
     memset(version, 0, I2C_DISP_COLS + 1);
