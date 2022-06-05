@@ -77,7 +77,8 @@ void testPins()
 
     pinMode(C64_WRITE_PIN, INPUT_PULLDOWN);
 
-    char buf[50];
+    char buf[51];
+    memset(buf, 0, 51);
     while (true)
     {
         int w = digitalRead(C64_WRITE_PIN);
@@ -139,9 +140,11 @@ bool initTapuino()
     Serial.println("TapuinoNext");
 
     //testEncoderPins();
+    theInputHandler.Init();
 
     char version[I2C_DISP_COLS + 1];
-    snprintf(version, I2C_DISP_COLS + 1, "%s", FW_VERSION);
+    memset(version, 0, I2C_DISP_COLS + 1);
+    snprintf(version, I2C_DISP_COLS, "%s", FW_VERSION);
     lcdUtils.Status(version);
     Serial.println(version);
     delay(2000);

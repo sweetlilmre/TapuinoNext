@@ -20,6 +20,7 @@ namespace TapuinoNext
         void ShowFile(const char* fileName, bool title, bool isDirectory);
         void ShowFile(const char* fileName, bool title);
         void ScrollFileName(uint32_t tickerTime, uint32_t tickerHoldTime, bool isDirectory);
+        char Spinner();
 
       private:
         LCD* lcd;
@@ -29,6 +30,5 @@ namespace TapuinoNext
         char fileNameBuf[256];
 
         void Line(uint8_t line, const char* msg, char indicator);
-        char Spinner();
     };
 } // namespace TapuinoNext

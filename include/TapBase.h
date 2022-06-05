@@ -12,6 +12,10 @@ namespace TapuinoNext
 #define TAP_HEADER_MAGIC_LENGTH 12
 #define TAP_HEADER_DATA_LENGTH 8
 
+#define TAP_HEADER_VERSION_0 0
+#define TAP_HEADER_VERSION_1 1
+#define TAP_HEADER_VERSION_2 2
+
     struct TAP_INFO
     {
         uint8_t version;  // TAP file format version:

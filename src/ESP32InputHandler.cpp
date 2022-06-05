@@ -11,6 +11,10 @@ ESP32InputHandler* ESP32InputHandler::internalClass = NULL;
 ESP32InputHandler::ESP32InputHandler(OptionEventHandler* optionEventHandler) : InputHandler(optionEventHandler)
 {
     internalClass = this;
+}
+
+void ESP32InputHandler::Init()
+{
     pinMode(ROTARY_ENCODER_A_PIN, INPUT_PULLUP);
     pinMode(ROTARY_ENCODER_B_PIN, INPUT_PULLUP);
     attachInterrupt(digitalPinToInterrupt(ROTARY_ENCODER_A_PIN), ReadEncoderStatic, CHANGE);

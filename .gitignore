@@ -46,3 +46,6 @@
 
 # Allow board configs outside of source control
 include/config-user.h
+
+# tmp python modukes
+__pycache__/*

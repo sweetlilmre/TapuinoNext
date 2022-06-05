@@ -11,6 +11,7 @@ namespace TapuinoNext
       public:
         ESP32InputHandler(OptionEventHandler* optionEventHandler);
         ~ESP32InputHandler();
+        void Init();
         InputResponse GetInput();
         void OnChange(OptionTagId tag, IOptionType* option);
 

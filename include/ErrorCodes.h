@@ -11,6 +11,8 @@ namespace TapuinoNext
         UNKNOWN_TAP_FORMAT,
         OUT_OF_MEMORY,
         FILE_ERROR,
+        FILE_WRITE_ERROR,
+        FILE_EXISTS_ERROR,
         INVALID_COUNTER_POS,
         OUT_OF_RANGE,
         OPERATION_ABORTED

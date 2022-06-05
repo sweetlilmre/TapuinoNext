@@ -17,6 +17,8 @@ namespace TapuinoNext
     const char S_CREATE_FAILED[] = "Create Failed!";
     const char S_COUNTER_GR_SIZE[] = "Count > size!";
     const char S_FILE_ERROR[] = "File Error!";
+    const char S_FILE_WRITE_ERROR[] = "File Write Err!";
+    const char S_FILE_EXISTS_ERROR[] = "File Exists Err!";
     const char S_CANT_CREATE_DIR[] = "Can't create dir";
     const char S_NO_FILES_FOUND[] = "No Files Found!";
     const char S_FILE_NOT_FOUND[] = "File Not Found!";
@@ -51,7 +53,8 @@ namespace TapuinoNext
     const char S_OPTIONS[] = "Options";
     const char S_INPUT_AND_UI[] = "Input & UI";
     const char S_MACHINE[] = "Machine";
-    const char S_UPDATE[] = "Update FW";
+    const char S_UPDATE[] = "Update";
+    const char S_UPDATE_FW[] = "Update FW";
 
     // Update related strings
     const char S_UPDATE_UPDATING[] = "FW updating";

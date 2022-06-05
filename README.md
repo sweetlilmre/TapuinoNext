@@ -9,11 +9,12 @@ Most of the code has been written and tested to a fair extent, but there are bou
 Please report bugs as issues against the repo. If you have fixes, please submit these as a pull request.
 I could really use some help with documentation in markdown format if you would like to contribute in that way.
 
-## Hardware
-I haven't had time to document the hardware to the level I would like.
-At this point in time, you are pretty much on your own, apart from the schematic in the docs folder.
+## Using the TapuinoNext
 
-UPDATE:
+Instructions on how to navigate the UI and detail on the TapuinoNext functionality can be found on this page: [TapuinoNext UI](docs/ui/TapuinoNext-UI.md). This is still very much a work in progress.
+
+## Hardware
+
 - "instructions" to build a stripboard prototype are available at [Prototype Build](docs/PrototypeBuild.md)
 - schematics and board designs for reference implementations are available in the [Eagle](docs/Eagle) folder.
 - the mini board has been produced and tested successfully!

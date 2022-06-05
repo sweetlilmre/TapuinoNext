@@ -49,16 +49,15 @@ void TapRecorder::CalcTapData(uint32_t signalTime)
     }
     else
     {
-        // in version 0 TAP files a zero is used to indicate an overflow condition
+        // Only TAP version 1 files are supported.
+        // TODO: implement Version 2 (C16 half-wave)
+        // TAP version 0 will NOT be supported
+
         WriteByte(0);
-        // otherwise the zero is followed by 24 bits of signal data
-        if (tapInfo.version != 0)
-        {
-            uint32_t tapData = (uint32_t) ((double) signalTime / cycleMultRaw);
-            WriteByte((uint8_t) tapData);
-            WriteByte((uint8_t) (tapData >> 8));
-            WriteByte((uint8_t) (tapData >> 16));
-        }
+        uint32_t tapData = (uint32_t) ((double) signalTime / cycleMultRaw);
+        WriteByte((uint8_t) tapData);
+        WriteByte((uint8_t) (tapData >> 8));
+        WriteByte((uint8_t) (tapData >> 16));
     }
 }
 
@@ -129,15 +128,23 @@ ErrorCodes TapRecorder::CreateTap(File tapFile)
     tap_magic[1] = TAP_MAGIC_POSTFIX1;
     tap_magic[2] = TAP_MAGIC_POSTFIX2;
 
-    tapInfo.version = machineType == MACHINE_TYPE::C16 ? 2 : 1;
+    tapInfo.version = machineType == MACHINE_TYPE::C16 ? TAP_HEADER_VERSION_2 : TAP_HEADER_VERSION_1;
     tapInfo.video = (uint8_t) (options->ntscPAL.GetValue() ? VIDEO_MODE::NSTC : VIDEO_MODE::PAL);
     tapInfo.platform = (uint8_t) machineType;
 
-    if (tapFile.write((uint8_t*) &tap_magic, TAP_HEADER_MAGIC_LENGTH) != TAP_HEADER_MAGIC_LENGTH)
-        return ErrorCodes::FILE_ERROR;
+    size_t written = tapFile.write((uint8_t*) &tap_magic, TAP_HEADER_MAGIC_LENGTH);
+    if (written != TAP_HEADER_MAGIC_LENGTH)
+    {
+        Serial.printf("unable to write TAP magic! Length: %d\n", written);
+        return ErrorCodes::FILE_WRITE_ERROR;
+    }
 
-    if (tapFile.write((uint8_t*) &tapInfo, TAP_HEADER_DATA_LENGTH) != TAP_HEADER_DATA_LENGTH)
-        return ErrorCodes::FILE_ERROR;
+    written = tapFile.write((uint8_t*) &tapInfo, TAP_HEADER_DATA_LENGTH);
+    if (written != TAP_HEADER_DATA_LENGTH)
+    {
+        Serial.printf("unable to write TAP header! Length: %d\n", written);
+        return ErrorCodes::FILE_WRITE_ERROR;
+    }
 
     SetupCycleTiming();
 

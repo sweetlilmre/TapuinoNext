@@ -20,7 +20,12 @@ void Updater::OnProgress(size_t progress, size_t size)
 {
     float prog = ((float) progress / (float) size) * 100;
     char buf[I2C_DISP_COLS + 1];
-    snprintf(buf, I2C_DISP_COLS + 1, "progress: %d%%", (int) prog);
+    memset(buf, 0, I2C_DISP_COLS + 1);
+
+    lcdUtils->GetLCD()->SetCursor(I2C_DISP_COLS - 1, 0);
+    lcdUtils->GetLCD()->Write(lcdUtils->Spinner());
+
+    snprintf(buf, I2C_DISP_COLS, "progress: %d%%", (int) prog);
     lcdUtils->Status(buf);
 }
 
@@ -87,7 +92,7 @@ void Updater::OnAction()
 
     MenuEntry inPlayEntries[] = {
         {MenuEntryType::IndexEntry, S_EXIT, NULL},
-        {MenuEntryType::IndexEntry, S_UPDATE, NULL},
+        {MenuEntryType::IndexEntry, S_UPDATE_FW, NULL},
     };
     TheMenu inPlayMenu = {S_UPDATE, (MenuEntry*) inPlayEntries, 2, 0, NULL};
 
