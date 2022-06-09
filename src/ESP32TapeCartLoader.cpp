@@ -14,11 +14,6 @@ ESP32TapeCartLoader::ESP32TapeCartLoader(UtilityCollection* utilityCollection)
     ESP32TapeCartLoader::internalClass = this;
     loaderMode = false;
     shiftReg = 0;
-
-    for (int i = 0; i < 10240; i++)
-    {
-        //tmpData[i] = i % 256;
-    }
 }
 
 ESP32TapeCartLoader::~ESP32TapeCartLoader()
