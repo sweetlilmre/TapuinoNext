@@ -43,7 +43,7 @@ jobs:
         uses: anmarkoulis/commitizen-changelog-reader@master
         with:
           tag_name: ${{ github.ref }}
-          changelog: RELEASE_NOTES.md
+          changelog: ./RELEASE_NOTES.md
 
       - name: Release
         uses: softprops/action-gh-release@v0.1.14
