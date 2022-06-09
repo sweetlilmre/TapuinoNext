@@ -39,6 +39,7 @@ jobs:
 
       - name: Get notes
         id: generate_notes
+        if: startsWith(github.ref, 'refs/tags/')
         uses: anmarkoulis/commitizen-changelog-reader@master
         with:
           tag_name: ${{ github.ref }}
