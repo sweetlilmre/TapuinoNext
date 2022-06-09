@@ -37,6 +37,12 @@ jobs:
           verbose: true
           disable-auto-clean: false
 
+      - name: Test notes
+        id: test_notes
+        run: |
+          ls -l
+        shell: bash
+        
       - name: Get notes
         id: generate_notes
         if: startsWith(github.ref, 'refs/tags/')
