@@ -3,7 +3,7 @@
 ** sweetlilmre <sweetlilmre@gmail.com> **
 *****************************************
 
-## v0.0.3-alpha+? - ? June 2022
+## v0.0.2-alpha+238 - 9 June 2022
 
   - Changed changelog format for automatice release note generation
   - Added 'v' to version, should have been there from the begining

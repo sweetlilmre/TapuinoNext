@@ -43,13 +43,7 @@ jobs:
         uses: anmarkoulis/commitizen-changelog-reader@master
         with:
           tag_name: ${{ github.ref }}
-          changelog: RELEASE_NOTES
-
-      - name: Test notes
-        id: test_notes
-        run: |
-          echo "${{ format('{0} {1}', '[**Release Notes:**](https://github.com/sweetlilmre/TapuinoNext/blob/main/RELEASE_NOTES.md)', join(fromJson(steps.generate_notes.outputs.notes).notes, '')) }}"
-        shell: bash
+          changelog: RELEASE_NOTES.md
 
       - name: Release
         uses: softprops/action-gh-release@v0.1.14
