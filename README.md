@@ -44,11 +44,17 @@ This is the one I built:
   
 ![4 Channel Level Shifter](docs/img/4CH_Level_Shifter.png?raw=true "4 Channel Level Shifter")
 
-- C64 Datasette connector (use one off of a dead datasette or find one of these: https://www.thefuturewas8bit.com/cassette-port-connector-vic20-64-64c-128-128d-pet.html)
+- C64 Datasette connector (use one off of a dead datasette or find one of these: https://www.thefuturewas8bit.com/cassette-port-connector-vic20-64-64c-128-128d-pet.html
 
 Wire this all up according to the schematic and flash the firmware.
 
 ## Firmware
+
+If you have already flashed a recent firmware, then firmware releases are available at: https://github.com/sweetlilmre/TapuinoNext/releases
+
+As newer firmware can self update, all you need to do is drop the *update.bin* file onto the root of the SD Card and select the firmware update option from the options menu.
+
+For a first time build:
 
 Probably the easiest way to handle this at the moment is to:
 - install VS Code
@@ -57,6 +63,10 @@ Probably the easiest way to handle this at the moment is to:
 - clone the TapuinoNext repository
 - you will need to create a ***config-user.h*** file in the include directory. This is currently used to specify which of the 2 supported displays you have and what the correct I2C address for the display is. A sample ***config-user.h.example*** has beem provided
 - point VS code to the directory you cloned the repo into and upload to the board (I'm assuming that you know how to do all of this)
+
+## TODO / Roadmap
+
+See [TODO](TODO.md)
 
 ## Attribution
 

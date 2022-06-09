@@ -27,6 +27,7 @@ namespace TapuinoNext
         static void IRAM_ATTR MotorSignalCallbackStatic();
         volatile uint16_t shiftReg;
         bool loaderMode;
+        uint16_t callAddr, loadAddr, endAddr;
     };
 } // namespace TapuinoNext
 #endif
