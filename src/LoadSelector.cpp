@@ -1,6 +1,6 @@
 #include "LoadSelector.h"
 #include "ESP32TapLoader.h"
-#include "ESP32TapeCartLoader.h"
+// #include "ESP32TapeCartLoader.h"
 #include "FS.h"
 #include "Lang.h"
 
@@ -216,12 +216,12 @@ void LoadSelector::OnAction()
                 else
                 {
                     ESP32TapLoader tl(utilityCollection, 4096);
-                    ESP32TapeCartLoader tapeCartLoader(utilityCollection);
-                    tapeCartLoader.Init();
+                    // ESP32TapeCartLoader tapeCartLoader(utilityCollection);
+                    // tapeCartLoader.Init();
                     File tmpFile = GetFileAtIndex(dir, curIndex - 1, numFiles);
 
                     tl.PlayTap(tmpFile);
-                    tapeCartLoader.CheckForMode();
+                    // tapeCartLoader.CheckForMode();
                     tmpFile.close();
                     dir.close();
                     return;
