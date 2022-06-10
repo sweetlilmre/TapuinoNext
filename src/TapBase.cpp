@@ -30,12 +30,13 @@ TapBase::TapBase(UtilityCollection* utilityCollection, uint32_t bufferSize)
     this->bufferSize = powerTwo;
     bufferMask = this->bufferSize - 1;
     halfBufferSize = this->bufferSize >> 1;
-    ;
     bufferSwitchPos = halfBufferSize;
+
     pBuffer = NULL;
     bufferPos = 0;
     cycleMultRaw = 1;
     cycleMult8 = 1;
+    
     pinMode(C64_SENSE_PIN, OUTPUT);
     digitalWrite(C64_SENSE_PIN, HIGH);
 

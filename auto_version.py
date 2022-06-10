@@ -22,7 +22,7 @@ else:
         with open(version_file_name, newline='\n') as versionFile:
             version = versionFile.readline()
 
-            p = re.compile(r"^(?P<version>(?P<major>0|[1-9]\d*)\.(?P<minor>0|[1-9]\d*)\.(?P<patch>0|[1-9]\d*)(?:-(?P<prerelease>(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?)(?:\+(?P<buildmetadata>0|[1-9]\d*))$")
+            p = re.compile(r"^(?P<version>v(?P<major>0|[1-9]\d*)\.(?P<minor>0|[1-9]\d*)\.(?P<patch>0|[1-9]\d*)(?:-(?P<prerelease>(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?)(?:\+(?P<buildmetadata>0|[1-9]\d*))$")
             m = p.match(version)
             if m:
                 build_no = int(m.group("buildmetadata")) + 1

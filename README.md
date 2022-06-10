@@ -50,6 +50,12 @@ Wire this all up according to the schematic and flash the firmware.
 
 ## Firmware
 
+If you have already flashed a recent firmware, then firmware releases are available at: https://github.com/sweetlilmre/TapuinoNext/releases
+
+As newer firmware can self update, all you need to do is drop the *update.bin* file onto the root of the SD Card and select the firmware update option from the options menu.
+
+For a first time build:
+
 Probably the easiest way to handle this at the moment is to:
 - install VS Code
 - install Platformio on top of that
@@ -57,6 +63,10 @@ Probably the easiest way to handle this at the moment is to:
 - clone the TapuinoNext repository
 - you will need to create a ***config-user.h*** file in the include directory. This is currently used to specify which of the 2 supported displays you have and what the correct I2C address for the display is. A sample ***config-user.h.example*** has beem provided
 - point VS code to the directory you cloned the repo into and upload to the board (I'm assuming that you know how to do all of this)
+
+## TODO / Roadmap
+
+See [TODO](TODO.md)
 
 ## Attribution
 
