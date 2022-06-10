@@ -13,6 +13,6 @@
     - Differentiate behaviour depending on TAP / PRG load
 - C16 TAP (1/2 wave) playback
   - Fix cycle counting
-  - Check and possibly fix recording
+  - Implement 1/2 wave recording
 - Implement other machine type timings (PET etc) and check values against Vice
 - Add file / dir filter to remove hidden directories (MacOS / Win / etc?)

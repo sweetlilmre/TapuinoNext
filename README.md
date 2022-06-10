@@ -44,7 +44,7 @@ This is the one I built:
   
 ![4 Channel Level Shifter](docs/img/4CH_Level_Shifter.png?raw=true "4 Channel Level Shifter")
 
-- C64 Datasette connector (use one off of a dead datasette or find one of these: https://www.thefuturewas8bit.com/cassette-port-connector-vic20-64-64c-128-128d-pet.html
+- C64 Datasette connector (use one off of a dead datasette or find one of these: https://www.thefuturewas8bit.com/cassette-port-connector-vic20-64-64c-128-128d-pet.html)
 
 Wire this all up according to the schematic and flash the firmware.
 
