@@ -8,9 +8,10 @@ using namespace TapuinoNext;
 
 ESP32TapeCartLoader* ESP32TapeCartLoader::internalClass = NULL;
 
-ESP32TapeCartLoader::ESP32TapeCartLoader(UtilityCollection* utilityCollection)
+ESP32TapeCartLoader::ESP32TapeCartLoader(UtilityCollection* utilityCollection, File& prgFile)
 {
-    this->utilityCollection = utilityCollection;
+    this->flipBuffer = utilityCollection->flipBuffer;
+    this->prgFile = prgFile;
     ESP32TapeCartLoader::internalClass = this;
     loaderMode = false;
     shiftReg = 0;
@@ -97,7 +98,36 @@ bool ESP32TapeCartLoader::CheckForMode()
             return false;
         }
     }
+    HWStopSampling();
     return (true);
+}
+
+bool ESP32TapeCartLoader::LoadPRG()
+{
+    if (!CheckForMode())
+    {
+        return false;
+    }
+
+    flipBuffer->Reset();
+
+    uint8_t startAddrBuf[2];
+    uint16_t startAddr;
+
+    prgFile.read(startAddrBuf, 2);
+    startAddr = startAddrBuf[0] | ((uint16_t) startAddrBuf[1] << 8);
+    if (startAddr == 0x0801)
+    {
+        static uint8_t basic_starter[] = {
+            0xfa, 0x07,       // load at $07fa
+            0x20, 0x59, 0xa6, // jsr $a659    ; set basic pointer and CLR
+            0x4c, 0xae, 0xa7, // jmp $a7ae    ; RUN
+            0x00              // $0800 must be zero
+        };
+        uint32_t starterSize = sizeof(basic_starter) / sizeof(uint8_t);
+        flipBuffer->SetHeader(basic_starter, starterSize);
+    }
+    return false;
 }
 
 void ESP32TapeCartLoader::MotorSignalCallback(bool writeHigh)

@@ -29,9 +29,5 @@ namespace TapuinoNext
         ErrorCodes CreateTap(File tapFile);
         void StartSampling();
         void StopSampling();
-
-        void FlushBufferIfNeeded(File tapFile);
-        void FlushBufferFinal(File tapFile);
-        void WriteByte(uint8_t value);
     };
 } // namespace TapuinoNext

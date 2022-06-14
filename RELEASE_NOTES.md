@@ -9,6 +9,7 @@
   - Added 'v' to version, should have been there from the begining
     - fixed auto_version.py to support this
   - Added TODO.md to keep some kind of roadmap going
+  - Moved large buffer handling to FlipBuffer
 
 ## v0.0.2-alpha+237 - 04 June 2022
   - Fixed various compatibility issues with framework-arduinoespressif32 > 2.0.1

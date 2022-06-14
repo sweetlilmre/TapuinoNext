@@ -29,8 +29,6 @@ namespace TapuinoNext
         void StartTimer();
         void StopTimer();
 
-        uint8_t ReadByte();
-        inline void FillBufferIfNeeded(File tapFile);
         bool InPlayMenu(File tapFile);
         bool SeekToCounter(File tapFile, uint16_t targetCounter);
     };

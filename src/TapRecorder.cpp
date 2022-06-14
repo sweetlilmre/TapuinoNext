@@ -14,19 +14,6 @@ TapRecorder::~TapRecorder()
 {
 }
 
-void TapRecorder::WriteByte(uint8_t value)
-{
-    if (bufferPos == bufferSwitchPos)
-    {
-        bufferSwitchFlag = true;
-    }
-
-    pBuffer[bufferPos++] = value;
-    bufferPos &= bufferMask;
-    tapInfo.position++;
-    tapInfo.length = tapInfo.position;
-}
-
 void TapRecorder::CalcTapData(uint32_t signalTime)
 {
     /*
@@ -45,7 +32,8 @@ void TapRecorder::CalcTapData(uint32_t signalTime)
     uint32_t tapData = (uint32_t) ((double) signalTime / cycleMult8);
     if (tapData < 256)
     {
-        WriteByte((uint8_t) tapData);
+        flipBuffer->WriteByte((uint8_t) tapData);
+        tapInfo.position++;
     }
     else
     {
@@ -53,36 +41,14 @@ void TapRecorder::CalcTapData(uint32_t signalTime)
         // TODO: implement Version 2 (C16 half-wave)
         // TAP version 0 will NOT be supported
 
-        WriteByte(0);
+        flipBuffer->WriteByte(0);
         uint32_t tapData = (uint32_t) ((double) signalTime / cycleMultRaw);
-        WriteByte((uint8_t) tapData);
-        WriteByte((uint8_t) (tapData >> 8));
-        WriteByte((uint8_t) (tapData >> 16));
+        flipBuffer->WriteByte((uint8_t) tapData);
+        flipBuffer->WriteByte((uint8_t) (tapData >> 8));
+        flipBuffer->WriteByte((uint8_t) (tapData >> 16));
+        tapInfo.position += 4;
     }
-}
-
-inline void TapRecorder::FlushBufferIfNeeded(File tapFile)
-{
-    if (bufferSwitchFlag)
-    {
-        bufferSwitchFlag = false;
-        bufferSwitchPos = halfBufferSize - bufferSwitchPos;
-        tapFile.write(&pBuffer[bufferSwitchPos], halfBufferSize);
-    }
-}
-
-void TapRecorder::FlushBufferFinal(File tapFile)
-{
-    if (bufferPos < halfBufferSize)
-    {
-        tapFile.write(pBuffer, bufferPos);
-    }
-    else
-    {
-        tapFile.write(&pBuffer[halfBufferSize], bufferPos - halfBufferSize);
-    }
-    tapFile.seek(TAP_HEADER_MAGIC_LENGTH);
-    tapFile.write((uint8_t*) &tapInfo, TAP_HEADER_DATA_LENGTH);
+    tapInfo.length = tapInfo.position;
 }
 
 void TapRecorder::StartSampling()
@@ -109,14 +75,7 @@ ErrorCodes TapRecorder::CreateTap(File tapFile)
     uint32_t tap_magic[TAP_HEADER_MAGIC_LENGTH / 4];
     memset(&tapInfo, 0, sizeof(tapInfo));
 
-    if (pBuffer == NULL)
-    {
-        pBuffer = (uint8_t*) malloc(bufferSize);
-        if (pBuffer == NULL)
-            return ErrorCodes::OUT_OF_MEMORY;
-    }
-
-    bufferPos = 0;
+    flipBuffer->Reset();
     tapFile.seek(0);
 
     // TODO: C16 recording is not properly implemented as yet.
@@ -203,7 +162,7 @@ void TapRecorder::RecordTap(File tapFile)
         if (!processSignal)
             break;
 
-        FlushBufferIfNeeded(tapFile);
+        flipBuffer->FlushBufferIfNeeded(tapFile);
 
         // (uint16_t) (DS_G * (sqrt((tapInfo.cycles / 1000000.0 * (DS_V_PLAY / DS_D / PI)) + ((DS_R * DS_R) / (DS_D * DS_D))) - (DS_R / DS_D)));
         tapInfo.counterActual = CYCLES_TO_COUNTER(tapInfo.cycles);
@@ -216,13 +175,17 @@ void TapRecorder::RecordTap(File tapFile)
             StopSampling();
             if (resp == InputResponse::Abort)
             {
-                FlushBufferFinal(tapFile);
+                flipBuffer->FlushBufferFinal(tapFile);
+                tapFile.seek(TAP_HEADER_MAGIC_LENGTH);
+                tapFile.write((uint8_t*) &tapInfo, TAP_HEADER_DATA_LENGTH);
                 return;
             }
             if (!InRecordMenu(tapFile))
             {
                 Serial.println("exiting recording");
-                FlushBufferFinal(tapFile);
+                flipBuffer->FlushBufferFinal(tapFile);
+                tapFile.seek(TAP_HEADER_MAGIC_LENGTH);
+                tapFile.write((uint8_t*) &tapInfo, TAP_HEADER_DATA_LENGTH);
                 return;
             }
             lcdUtils->Title(S_RECORDING);

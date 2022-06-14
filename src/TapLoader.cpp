@@ -24,19 +24,6 @@ TapLoader::~TapLoader()
 {
 }
 
-uint8_t TapLoader::ReadByte()
-{
-    if (bufferPos == bufferSwitchPos)
-    {
-        bufferSwitchFlag = true;
-    }
-
-    uint8_t ret = pBuffer[bufferPos++];
-    bufferPos &= bufferMask;
-    tapInfo.position++;
-    return ret;
-}
-
 uint32_t TapLoader::CalcSignalTime()
 {
     if (tapInfo.position >= tapInfo.length)
@@ -44,7 +31,8 @@ uint32_t TapLoader::CalcSignalTime()
         return (OUT_OF_FILE_MARKER);
     }
 
-    uint32_t signalTime = ReadByte();
+    uint32_t signalTime = flipBuffer->ReadByte();
+    tapInfo.position++;
     if (signalTime != 0)
     {
         signalTime = (uint32_t) ((double) signalTime * cycleMult8);
@@ -59,10 +47,11 @@ uint32_t TapLoader::CalcSignalTime()
         }
         else
         {
-            signalTime = (uint32_t) ReadByte();
-            signalTime |= ((uint32_t) ReadByte()) << 8;
-            signalTime |= ((uint32_t) ReadByte()) << 16;
+            signalTime = (uint32_t) flipBuffer->ReadByte();
+            signalTime |= ((uint32_t) flipBuffer->ReadByte()) << 8;
+            signalTime |= ((uint32_t) flipBuffer->ReadByte()) << 16;
             signalTime = (uint32_t) ((double) signalTime * cycleMultRaw);
+            tapInfo.position += 3;
         }
     }
     if (tapInfo.version == 2)
@@ -74,16 +63,6 @@ uint32_t TapLoader::CalcSignalTime()
         signalTime <<= 1;
     }
     return (signalTime);
-}
-
-inline void TapLoader::FillBufferIfNeeded(File tapFile)
-{
-    if (bufferSwitchFlag)
-    {
-        bufferSwitchFlag = false;
-        bufferSwitchPos = halfBufferSize - bufferSwitchPos;
-        tapFile.readBytes((char*) &pBuffer[bufferSwitchPos], halfBufferSize);
-    }
 }
 
 bool TapLoader::SeekToCounter(File tapFile, uint16_t targetCounter)
@@ -98,8 +77,7 @@ bool TapLoader::SeekToCounter(File tapFile, uint16_t targetCounter)
         // only start from the begining of the tap if we are seeking backwards
         // get to the first byte of actual tap data
         tapFile.seek(TAP_HEADER_LENGTH);
-        tapFile.readBytes((char*) pBuffer, bufferSize);
-        bufferPos = 0;
+        flipBuffer->FillWholeBuffer(tapFile);
         tapInfo.cycles = 0;
         tapInfo.position = 0;
         tapInfo.counterActual = 0;
@@ -114,7 +92,7 @@ bool TapLoader::SeekToCounter(File tapFile, uint16_t targetCounter)
     while (tapInfo.counterActual < targetCounter)
     {
         uint32_t signalTime = CalcSignalTime();
-        FillBufferIfNeeded(tapFile);
+        flipBuffer->FillBufferIfNeeded(tapFile);
 
         if (signalTime == OUT_OF_FILE_MARKER)
         {
@@ -167,14 +145,7 @@ ErrorCodes TapLoader::VerifyTap(File tapFile)
     uint32_t tap_magic[TAP_HEADER_MAGIC_LENGTH / 4];
     memset(&tapInfo, 0, sizeof(tapInfo));
 
-    if (pBuffer == NULL)
-    {
-        pBuffer = (uint8_t*) malloc(bufferSize);
-        if (pBuffer == NULL)
-            return ErrorCodes::OUT_OF_MEMORY;
-    }
-
-    bufferPos = 0;
+    flipBuffer->Reset();
 
     tapFile.seek(0);
     size = tapFile.size();
@@ -277,7 +248,7 @@ void TapLoader::PlayTap(File tapFile)
     // first half of the buffer will be filled with new data. this will toggle
     // with the code below in the while loop, filling the second half of the
     // buffer as the index resets to zero etc.
-    tapFile.readBytes((char*) pBuffer, bufferSize);
+    flipBuffer->FillWholeBuffer(tapFile);
 
     // skip the menu if auto play is set.
     if (!options->autoPlay.GetValue())
@@ -303,7 +274,7 @@ void TapLoader::PlayTap(File tapFile)
             break;
         }
 
-        FillBufferIfNeeded(tapFile);
+        flipBuffer->FillBufferIfNeeded(tapFile);
 
         // (uint16_t) (DS_G * (sqrt((tapInfo.cycles / 1000000.0 * (DS_V_PLAY / DS_D / PI)) + ((DS_R * DS_R) / (DS_D * DS_D))) - (DS_R / DS_D)));
         tapInfo.counterActual = CYCLES_TO_COUNTER(tapInfo.cycles);
