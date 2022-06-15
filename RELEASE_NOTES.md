@@ -11,6 +11,7 @@
   - Added TODO.md to keep some kind of roadmap going
   - Moved large buffer handling to FlipBuffer
 
+
 ## v0.0.2-alpha+237 - 04 June 2022
   - Fixed various compatibility issues with framework-arduinoespressif32 > 2.0.1
     - the platform is pinned to version 4.0.1 (and hence framework 2.0.1) waiting for timer fixes to get into the next framework release and platform update (4.0.5 and 2.0.4?)
