@@ -25,10 +25,25 @@ bool LoadSelector::Filter(File file)
 // "pat."
 #define TAP_MAGIC_LITTLE_ENDIAN 0x7061742E
 
+    // no files or directories with one "." as first char
+    const char* name = file.name();
+    if (name[0] == '.')
+    {
+        if (name[1] == '.')
+        {
+            return (true);
+        }
+        else
+        {
+            return (false);
+        }
+    }
+
     if (file.isDirectory())
     {
         return (true);
     }
+
 
     const char* ext = strrchr(file.name(), '.');
     if (ext)
