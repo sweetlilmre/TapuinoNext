@@ -171,7 +171,7 @@ void LoadSelector::OnAction()
                 {
                     if (curIndex == 0)
                     {
-                        const char* curDirName = dir.name();
+                        const char* curDirName = dir.path();
                         char* prevPath = strrchr(curDirName, '/');
                         if (!prevPath)
                             break;
