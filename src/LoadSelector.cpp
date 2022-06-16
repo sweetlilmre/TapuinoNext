@@ -44,7 +44,6 @@ bool LoadSelector::Filter(File file)
         return (true);
     }
 
-
     const char* ext = strrchr(file.name(), '.');
     if (ext)
     {
