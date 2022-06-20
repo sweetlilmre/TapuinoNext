@@ -18,10 +18,18 @@ using namespace TapuinoNext;
 
 TapLoader::TapLoader(UtilityCollection* utilityCollection, uint32_t bufferSize) : TapBase(utilityCollection, bufferSize)
 {
+    isTiming = false;
 }
 
 TapLoader::~TapLoader()
 {
+}
+
+inline uint32_t TapLoader::ReadNextByte()
+{
+    uint32_t nextByte = flipBuffer->ReadByte();
+    tapInfo.position++;
+    return (nextByte);
 }
 
 uint32_t TapLoader::CalcSignalTime()
@@ -31,8 +39,7 @@ uint32_t TapLoader::CalcSignalTime()
         return (OUT_OF_FILE_MARKER);
     }
 
-    uint32_t signalTime = flipBuffer->ReadByte();
-    tapInfo.position++;
+    uint32_t signalTime = ReadNextByte();
     if (signalTime != 0)
     {
         signalTime = (uint32_t) ((double) signalTime * cycleMult8);
@@ -47,11 +54,10 @@ uint32_t TapLoader::CalcSignalTime()
         }
         else
         {
-            signalTime = (uint32_t) flipBuffer->ReadByte();
-            signalTime |= ((uint32_t) flipBuffer->ReadByte()) << 8;
-            signalTime |= ((uint32_t) flipBuffer->ReadByte()) << 16;
+            signalTime = ReadNextByte();
+            signalTime |= ReadNextByte() << 8;
+            signalTime |= ReadNextByte() << 16;
             signalTime = (uint32_t) ((double) signalTime * cycleMultRaw);
-            tapInfo.position += 3;
         }
     }
     if (tapInfo.version == 2)
@@ -116,25 +122,41 @@ bool TapLoader::SeekToCounter(File tapFile, uint16_t targetCounter)
 
 void TapLoader::StartTimer()
 {
-    // prep the read signal to start HIGH for first high / low transition
-    digitalWrite(C64_READ_PIN, HIGH);
-    // tell the C64 that play has been pressed
-    digitalWrite(C64_SENSE_PIN, LOW);
-    processSignal = true;
-    HWStartTimer();
+    if (!isTiming)
+    {
+        isTiming = true;
+        // prep the read signal to start HIGH for first high / low transition
+        digitalWrite(C64_READ_PIN, HIGH);
+        // tell the C64 that play has been pressed
+        digitalWrite(C64_SENSE_PIN, LOW);
+        processSignal = true;
+        HWStartTimer();
+    }
+    else
+    {
+        Serial.println("TapLoader::StartTimer() called while already running!");
+    }
 }
 
 void TapLoader::StopTimer()
 {
-    // prevent any further buffer processing
-    processSignal = false;
-    // shutdown the hardware timer
-    HWStopTimer();
+    if (isTiming)
+    {
+        isTiming = false;
+        // prevent any further buffer processing
+        processSignal = false;
+        // shutdown the hardware timer
+        HWStopTimer();
 
-    // reset the read signal to initial state
-    digitalWrite(C64_READ_PIN, LOW);
-    // tell the C64 that stop has been pressed
-    digitalWrite(C64_SENSE_PIN, HIGH);
+        // reset the read signal to initial state
+        digitalWrite(C64_READ_PIN, LOW);
+        // tell the C64 that stop has been pressed
+        digitalWrite(C64_SENSE_PIN, HIGH);
+    }
+    else
+    {
+        Serial.println("TapLoader::StopTimer() called, but it already stopped!");
+    }
 }
 
 ErrorCodes TapLoader::VerifyTap(File tapFile)
@@ -243,7 +265,7 @@ void TapLoader::PlayTap(File tapFile)
     lcdUtils->Title(S_TAP_OK);
     delay(1000);
 
-    // pre-fill the entire buffer. When the buffer index (bufferPos) crosses the
+    // Pre-fill the entire buffer. When the buffer index (bufferPos) crosses the
     // half way point (bufferSwitchPos) bufferSwitchFlag will be set and the
     // first half of the buffer will be filled with new data. this will toggle
     // with the code below in the while loop, filling the second half of the
@@ -270,8 +292,11 @@ void TapLoader::PlayTap(File tapFile)
         motorOn = digitalRead(C64_MOTOR_PIN);
         if (!processSignal)
         {
+            // ensure we clean up the timer if we ran out of TAP file, as triggered by CalcSignalTime() returning 0xFFFFFFFF
+            // TODO: investigate a possibly cleaner way to handle all of this instead of relying on magic values, processSignal should be owned by Stop/StartTimer
+            StopTimer();
             Serial.println("process signal false detected");
-            break;
+            return;
         }
 
         flipBuffer->FillBufferIfNeeded(tapFile);

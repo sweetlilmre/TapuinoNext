@@ -17,14 +17,17 @@ namespace TapuinoNext
         void RecordTap(File tapFile);
 
       protected:
-        // Interface to the hardware implementing derrived class
+        // Interface for the derrived class that implemtents the hardware interface
         /******************************************************/
         virtual void HWStartSampling() = 0;
         virtual void HWStopSampling() = 0;
         void CalcTapData(uint32_t signalTime);
         /******************************************************/
+        void FinalizeRecording(File tapFile);
 
       private:
+        bool isSampling;
+        void WriteNextByte(uint8_t nextByte);
         bool InRecordMenu(File tapFile);
         ErrorCodes CreateTap(File tapFile);
         void StartSampling();

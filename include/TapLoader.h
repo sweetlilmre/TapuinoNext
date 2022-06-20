@@ -21,10 +21,12 @@ namespace TapuinoNext
         /******************************************************/
         virtual void HWStartTimer() = 0;
         virtual void HWStopTimer() = 0;
-        uint32_t CalcSignalTime();
         /******************************************************/
+        uint32_t CalcSignalTime();
 
       private:
+        bool isTiming;
+        uint32_t ReadNextByte();
         ErrorCodes VerifyTap(File tapFile);
         void StartTimer();
         void StopTimer();

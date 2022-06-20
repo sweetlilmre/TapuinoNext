@@ -8,10 +8,17 @@ using namespace TapuinoNext;
 
 TapRecorder::TapRecorder(UtilityCollection* utilityCollection, uint32_t bufferSize) : TapBase(utilityCollection, bufferSize)
 {
+    isSampling = false;
 }
 
 TapRecorder::~TapRecorder()
 {
+}
+
+inline void TapRecorder::WriteNextByte(uint8_t nextByte)
+{
+    flipBuffer->WriteByte(nextByte);
+    tapInfo.position++;
 }
 
 void TapRecorder::CalcTapData(uint32_t signalTime)
@@ -32,8 +39,7 @@ void TapRecorder::CalcTapData(uint32_t signalTime)
     uint32_t tapData = (uint32_t) ((double) signalTime / cycleMult8);
     if (tapData < 256)
     {
-        flipBuffer->WriteByte((uint8_t) tapData);
-        tapInfo.position++;
+        WriteNextByte((uint8_t) tapData);
     }
     else
     {
@@ -41,33 +47,48 @@ void TapRecorder::CalcTapData(uint32_t signalTime)
         // TODO: implement Version 2 (C16 half-wave)
         // TAP version 0 will NOT be supported
 
-        flipBuffer->WriteByte(0);
+        WriteNextByte(0);
         uint32_t tapData = (uint32_t) ((double) signalTime / cycleMultRaw);
-        flipBuffer->WriteByte((uint8_t) tapData);
-        flipBuffer->WriteByte((uint8_t) (tapData >> 8));
-        flipBuffer->WriteByte((uint8_t) (tapData >> 16));
-        tapInfo.position += 4;
+        WriteNextByte((uint8_t) tapData);
+        WriteNextByte((uint8_t) (tapData >> 8));
+        WriteNextByte((uint8_t) (tapData >> 16));
     }
     tapInfo.length = tapInfo.position;
 }
 
 void TapRecorder::StartSampling()
 {
-    processSignal = true;
-    HWStartSampling();
-    // tell the C64 that play has been pressed
-    digitalWrite(C64_SENSE_PIN, LOW);
+    if (!isSampling)
+    {
+        isSampling = true;
+        processSignal = true;
+        HWStartSampling();
+        // tell the C64 that play has been pressed
+        digitalWrite(C64_SENSE_PIN, LOW);
+    }
+    else
+    {
+        Serial.println("TapRecorder::StartSampling() called while already sampling!");
+    }
 }
 
 void TapRecorder::StopSampling()
 {
-    // prevent any further buffer processing
-    processSignal = false;
-    // shutdown the hardware timer
-    HWStopSampling();
+    if (isSampling)
+    {
+        isSampling = false;
+        // prevent any further buffer processing
+        processSignal = false;
+        // shutdown the hardware timer
+        HWStopSampling();
 
-    // tell the C64 that stop has been pressed
-    digitalWrite(C64_SENSE_PIN, HIGH);
+        // tell the C64 that stop has been pressed
+        digitalWrite(C64_SENSE_PIN, HIGH);
+    }
+    else
+    {
+        Serial.println("TapRecorder::StopSampling() called while not sampling!");
+    }
 }
 
 ErrorCodes TapRecorder::CreateTap(File tapFile)
@@ -133,6 +154,13 @@ bool TapRecorder::InRecordMenu(File tapFile)
     }
 }
 
+void TapRecorder::FinalizeRecording(File tapFile)
+{
+    flipBuffer->FlushBufferFinal(tapFile);
+    tapFile.seek(TAP_HEADER_MAGIC_LENGTH);
+    tapFile.write((uint8_t*) &tapInfo, TAP_HEADER_DATA_LENGTH);
+}
+
 void TapRecorder::RecordTap(File tapFile)
 {
     ErrorCodes ret = CreateTap(tapFile);
@@ -143,7 +171,7 @@ void TapRecorder::RecordTap(File tapFile)
         return;
     };
 
-    lcdUtils->Title(S_SELECT_TO_REC);
+    lcdUtils->Title(S_SELECT_TO_START_REC);
     lcdUtils->ShowFile(tapFile.name(), false);
 
     while (inputHandler->GetInput() != InputResponse::Select)
@@ -159,9 +187,6 @@ void TapRecorder::RecordTap(File tapFile)
     while (true)
     {
         motorOn = digitalRead(C64_MOTOR_PIN);
-        if (!processSignal)
-            break;
-
         flipBuffer->FlushBufferIfNeeded(tapFile);
 
         // (uint16_t) (DS_G * (sqrt((tapInfo.cycles / 1000000.0 * (DS_V_PLAY / DS_D / PI)) + ((DS_R * DS_R) / (DS_D * DS_D))) - (DS_R / DS_D)));
@@ -175,17 +200,13 @@ void TapRecorder::RecordTap(File tapFile)
             StopSampling();
             if (resp == InputResponse::Abort)
             {
-                flipBuffer->FlushBufferFinal(tapFile);
-                tapFile.seek(TAP_HEADER_MAGIC_LENGTH);
-                tapFile.write((uint8_t*) &tapInfo, TAP_HEADER_DATA_LENGTH);
+                FinalizeRecording(tapFile);
                 return;
             }
             if (!InRecordMenu(tapFile))
             {
                 Serial.println("exiting recording");
-                flipBuffer->FlushBufferFinal(tapFile);
-                tapFile.seek(TAP_HEADER_MAGIC_LENGTH);
-                tapFile.write((uint8_t*) &tapInfo, TAP_HEADER_DATA_LENGTH);
+                FinalizeRecording(tapFile);
                 return;
             }
             lcdUtils->Title(S_RECORDING);

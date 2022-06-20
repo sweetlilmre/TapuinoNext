@@ -22,7 +22,7 @@ namespace TapuinoNext
         virtual void HWStopSampling();
 
       private:
-        void FastSendByte(uint8_t byte);
+        bool FastSendByte(uint8_t byte);
         UtilityCollection* utilityCollection;
         FlipBuffer* flipBuffer;
         static ESP32TapeCartLoader* internalClass;

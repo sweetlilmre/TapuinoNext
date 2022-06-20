@@ -5,11 +5,13 @@
 
 ## v0.0.2-alpha+238 - 9 June 2022
 
-  - Changed changelog format for automatice release note generation
+  - Changed changelog format for automatic release note generation
   - Added 'v' to version, should have been there from the begining
     - fixed auto_version.py to support this
   - Added TODO.md to keep some kind of roadmap going
   - Moved large buffer handling to FlipBuffer
+    - Cleaned up implementation in TapLoader and TapRecorder
+  - Changed start recording message to be clearer
 
 
 ## v0.0.2-alpha+237 - 04 June 2022
