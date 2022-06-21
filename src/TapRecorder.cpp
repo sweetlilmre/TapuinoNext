@@ -6,7 +6,7 @@ using namespace std;
 
 using namespace TapuinoNext;
 
-TapRecorder::TapRecorder(UtilityCollection* utilityCollection, uint32_t bufferSize) : TapBase(utilityCollection, bufferSize)
+TapRecorder::TapRecorder(UtilityCollection* utilityCollection) : TapBase(utilityCollection)
 {
     isSampling = false;
 }

@@ -16,7 +16,7 @@ using namespace TapuinoNext;
 
 #define OUT_OF_FILE_MARKER 0xFFFFFFFF
 
-TapLoader::TapLoader(UtilityCollection* utilityCollection, uint32_t bufferSize) : TapBase(utilityCollection, bufferSize)
+TapLoader::TapLoader(UtilityCollection* utilityCollection) : TapBase(utilityCollection)
 {
     isTiming = false;
 }

@@ -8,7 +8,7 @@ namespace TapuinoNext
     class TapLoader : public TapBase
     {
       public:
-        TapLoader(UtilityCollection* utilityCollection, uint32_t bufferSize);
+        TapLoader(UtilityCollection* utilityCollection);
         ~TapLoader();
         void PlayTap(File tapFile);
         const TAP_INFO* GetTapInfo()

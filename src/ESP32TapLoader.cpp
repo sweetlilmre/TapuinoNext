@@ -5,7 +5,7 @@ using namespace TapuinoNext;
 
 ESP32TapLoader* ESP32TapLoader::internalClass = NULL;
 
-ESP32TapLoader::ESP32TapLoader(UtilityCollection* utilityCollection, uint32_t bufferSize) : TapLoader(utilityCollection, bufferSize)
+ESP32TapLoader::ESP32TapLoader(UtilityCollection* utilityCollection) : TapLoader(utilityCollection)
 {
     ESP32TapLoader::internalClass = this;
     tapSignalTimer = NULL;

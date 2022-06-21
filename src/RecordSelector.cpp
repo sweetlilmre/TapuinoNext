@@ -281,7 +281,11 @@ void RecordSelector::OnAction()
     File recTap;
     if (ManualAutoMenu(recTap))
     {
-        ESP32TapRecorder rec(utilityCollection, 4096);
+        ESP32TapRecorder rec(utilityCollection);
         rec.RecordTap(recTap);
+    }
+    if (recTap)
+    {
+        recTap.close();
     }
 }

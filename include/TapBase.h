@@ -58,7 +58,7 @@ namespace TapuinoNext
     class TapBase
     {
       public:
-        TapBase(UtilityCollection* utilityCollection, uint32_t bufferSize);
+        TapBase(UtilityCollection* utilityCollection);
         virtual ~TapBase();
         const TAP_INFO* GetTapInfo()
         {

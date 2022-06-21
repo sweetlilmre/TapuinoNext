@@ -12,7 +12,7 @@ using namespace std;
 
 using namespace TapuinoNext;
 
-TapBase::TapBase(UtilityCollection* utilityCollection, uint32_t bufferSize)
+TapBase::TapBase(UtilityCollection* utilityCollection)
 {
     lcdUtils = utilityCollection->lcdUtils;
     inputHandler = utilityCollection->inputHandler;

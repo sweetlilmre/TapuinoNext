@@ -12,7 +12,7 @@ namespace TapuinoNext
     class TapRecorder : public TapBase
     {
       public:
-        TapRecorder(UtilityCollection* utilityCollection, uint32_t bufferSize);
+        TapRecorder(UtilityCollection* utilityCollection);
         ~TapRecorder();
         void RecordTap(File tapFile);
 
