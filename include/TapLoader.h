@@ -17,7 +17,7 @@ namespace TapuinoNext
         }
 
       protected:
-        // Interface to the hardware implementing derrived class
+        // Interface for the derrived class that implemtents the hardware interface
         /******************************************************/
         virtual void HWStartTimer() = 0;
         virtual void HWStopTimer() = 0;

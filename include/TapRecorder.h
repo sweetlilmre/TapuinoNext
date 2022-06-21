@@ -21,8 +21,8 @@ namespace TapuinoNext
         /******************************************************/
         virtual void HWStartSampling() = 0;
         virtual void HWStopSampling() = 0;
-        void CalcTapData(uint32_t signalTime);
         /******************************************************/
+        void CalcTapData(uint32_t signalTime);
         void FinalizeRecording(File tapFile);
 
       private:
