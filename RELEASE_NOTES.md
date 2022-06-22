@@ -3,7 +3,7 @@
 ** sweetlilmre <sweetlilmre@gmail.com> **
 *****************************************
 
-## v0.0.2-alpha+238 - 22 June 2022
+## v0.0.3-alpha+240 - 22 June 2022
 
 ### Feature
   - Added file filtering change to exclude files starting with . (remove Mac specific folders) (predecker)
