@@ -8,9 +8,10 @@ using namespace TapuinoNext;
 
 ESP32TapeCartLoader* ESP32TapeCartLoader::internalClass = NULL;
 
-ESP32TapeCartLoader::ESP32TapeCartLoader(UtilityCollection* utilityCollection)
+ESP32TapeCartLoader::ESP32TapeCartLoader(UtilityCollection* utilityCollection, File& prgFile)
 {
-    this->utilityCollection = utilityCollection;
+    this->flipBuffer = utilityCollection->flipBuffer;
+    this->prgFile = prgFile;
     ESP32TapeCartLoader::internalClass = this;
     loaderMode = false;
     shiftReg = 0;
@@ -25,7 +26,7 @@ void ESP32TapeCartLoader::Init()
     HWStartSampling();
 }
 
-void ESP32TapeCartLoader::FastSendByte(uint8_t byte)
+bool ESP32TapeCartLoader::FastSendByte(uint8_t byte)
 {
     portDISABLE_INTERRUPTS();
     digitalWrite(C64_SENSE_PIN, LOW);
@@ -34,7 +35,11 @@ void ESP32TapeCartLoader::FastSendByte(uint8_t byte)
     while (!digitalRead(C64_WRITE_PIN))
     {
         if (digitalRead(C64_MOTOR_PIN))
-            return;
+        {
+            digitalWrite(C64_SENSE_PIN, HIGH);
+            portENABLE_INTERRUPTS();
+            return false;
+        }
     }
 
     uint64_t curTime = esp_timer_get_time();
@@ -77,6 +82,7 @@ void ESP32TapeCartLoader::FastSendByte(uint8_t byte)
 
     digitalWrite(C64_SENSE_PIN, HIGH);
     portENABLE_INTERRUPTS();
+    return true;
 }
 
 bool ESP32TapeCartLoader::CheckForMode()
@@ -91,13 +97,73 @@ bool ESP32TapeCartLoader::CheckForMode()
             count++;
             delay(100);
         }
-        if (!loaderMode)
-        {
-            utilityCollection->lcdUtils->Error("FastLoader", "Not detected!");
-            return false;
-        }
     }
-    return (true);
+    HWStopSampling();
+    if (!loaderMode)
+    {
+        utilityCollection->lcdUtils->Error("FastLoader", "Not detected!");
+    }
+    return (loaderMode);
+}
+
+bool ESP32TapeCartLoader::LoadPRG()
+{
+    if (!CheckForMode())
+    {
+        return false;
+    }
+
+    flipBuffer->Reset();
+
+    uint8_t callAddrBuf[2];
+    size_t dataSize = prgFile.size();
+
+    prgFile.read(callAddrBuf, 2);
+    // remove the call / load address from the size
+    dataSize -= 2;
+
+    callAddr = callAddrBuf[0] | ((uint16_t) callAddrBuf[1] << 8);
+    uint32_t starterSize = 0;
+
+    if (callAddr == 0x0801)
+    {
+        static uint8_t basic_starter[] = {
+            //            0xfa, 0x07,       // load at $07fa
+            0x20, 0x59, 0xa6, // jsr $a659    ; set basic pointer and CLR
+            0x4c, 0xae, 0xa7, // jmp $a7ae    ; RUN
+            0x00              // $0800 must be zero
+        };
+        starterSize = sizeof(basic_starter) / sizeof(uint8_t);
+        flipBuffer->SetHeader(basic_starter, starterSize);
+        callAddr = 0x0801 - starterSize;
+    }
+    flipBuffer->FillWholeBuffer(prgFile, starterSize);
+    loadAddr = callAddr;
+    endAddr = loadAddr + dataSize;
+
+    if (!FastSendByte(callAddr & 0xff))
+        return false;
+    if (!FastSendByte(callAddr >> 8))
+        return false;
+    if (!FastSendByte(endAddr & 0xff))
+        return false;
+    if (!FastSendByte(endAddr >> 8))
+        return false;
+    if (!FastSendByte(loadAddr & 0xff))
+        return false;
+    if (!FastSendByte(loadAddr >> 8))
+        return false;
+
+    /* transmit data */
+    while (dataSize > 0)
+    {
+        dataSize--;
+        if (!FastSendByte(flipBuffer->ReadByte()))
+            return false;
+        flipBuffer->FillBufferIfNeeded(prgFile);
+    }
+
+    return true;
 }
 
 void ESP32TapeCartLoader::MotorSignalCallback(bool writeHigh)

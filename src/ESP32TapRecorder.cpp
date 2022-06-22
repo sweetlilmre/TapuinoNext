@@ -4,7 +4,7 @@ using namespace TapuinoNext;
 
 ESP32TapRecorder* ESP32TapRecorder::internalClass = NULL;
 
-ESP32TapRecorder::ESP32TapRecorder(UtilityCollection* utilityCollection, uint32_t bufferSize) : TapRecorder(utilityCollection, bufferSize)
+ESP32TapRecorder::ESP32TapRecorder(UtilityCollection* utilityCollection) : TapRecorder(utilityCollection)
 {
     ESP32TapRecorder::internalClass = this;
 }

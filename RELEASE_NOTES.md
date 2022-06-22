@@ -3,12 +3,23 @@
 ** sweetlilmre <sweetlilmre@gmail.com> **
 *****************************************
 
-## v0.0.2-alpha+238 - 9 June 2022
+## v0.0.2-alpha+238 - 22 June 2022
 
-  - Changed changelog format for automatice release note generation
+### Feature
+  - Added file filtering change to exclude files starting with . (remove Mac specific folders) (predecker)
+  - Added TODO.md to keep some kind of roadmap going
+
+### Fix
+  - Previous directory fix (predecker)
+  - Changed start recording message to be clearer
+
+### Internal
+  - Changed changelog format for automatic release note generation
   - Added 'v' to version, should have been there from the begining
     - fixed auto_version.py to support this
-  - Added TODO.md to keep some kind of roadmap going
+  - Moved large buffer handling to FlipBuffer
+    - Cleaned up implementation in TapLoader and TapRecorder
+  - Added raw TapeCart implementation code
 
 ## v0.0.2-alpha+237 - 04 June 2022
   - Fixed various compatibility issues with framework-arduinoespressif32 > 2.0.1

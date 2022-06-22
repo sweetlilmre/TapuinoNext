@@ -229,7 +229,7 @@ void LoadSelector::OnAction()
                 }
                 else
                 {
-                    ESP32TapLoader tl(utilityCollection, 4096);
+                    ESP32TapLoader tl(utilityCollection);
                     // ESP32TapeCartLoader tapeCartLoader(utilityCollection);
                     // tapeCartLoader.Init();
                     File tmpFile = GetFileAtIndex(dir, curIndex - 1, numFiles);

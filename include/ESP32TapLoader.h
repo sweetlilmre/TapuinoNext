@@ -9,7 +9,7 @@ namespace TapuinoNext
     class ESP32TapLoader : public TapLoader
     {
       public:
-        ESP32TapLoader(UtilityCollection* utilityCollection, uint32_t bufferSize);
+        ESP32TapLoader(UtilityCollection* utilityCollection);
         ~ESP32TapLoader();
 
       protected:
