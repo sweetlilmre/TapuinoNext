@@ -16,25 +16,20 @@ using namespace TapuinoNext;
 
 #define OUT_OF_FILE_MARKER 0xFFFFFFFF
 
-TapLoader::TapLoader(UtilityCollection* utilityCollection, uint32_t bufferSize) : TapBase(utilityCollection, bufferSize)
+TapLoader::TapLoader(UtilityCollection* utilityCollection) : TapBase(utilityCollection)
 {
+    isTiming = false;
 }
 
 TapLoader::~TapLoader()
 {
 }
 
-uint8_t TapLoader::ReadByte()
+inline uint32_t TapLoader::ReadNextByte()
 {
-    if (bufferPos == bufferSwitchPos)
-    {
-        bufferSwitchFlag = true;
-    }
-
-    uint8_t ret = pBuffer[bufferPos++];
-    bufferPos &= bufferMask;
+    uint32_t nextByte = flipBuffer->ReadByte();
     tapInfo.position++;
-    return ret;
+    return (nextByte);
 }
 
 uint32_t TapLoader::CalcSignalTime()
@@ -44,7 +39,7 @@ uint32_t TapLoader::CalcSignalTime()
         return (OUT_OF_FILE_MARKER);
     }
 
-    uint32_t signalTime = ReadByte();
+    uint32_t signalTime = ReadNextByte();
     if (signalTime != 0)
     {
         signalTime = (uint32_t) ((double) signalTime * cycleMult8);
@@ -59,9 +54,9 @@ uint32_t TapLoader::CalcSignalTime()
         }
         else
         {
-            signalTime = (uint32_t) ReadByte();
-            signalTime |= ((uint32_t) ReadByte()) << 8;
-            signalTime |= ((uint32_t) ReadByte()) << 16;
+            signalTime = ReadNextByte();
+            signalTime |= ReadNextByte() << 8;
+            signalTime |= ReadNextByte() << 16;
             signalTime = (uint32_t) ((double) signalTime * cycleMultRaw);
         }
     }
@@ -76,16 +71,6 @@ uint32_t TapLoader::CalcSignalTime()
     return (signalTime);
 }
 
-inline void TapLoader::FillBufferIfNeeded(File tapFile)
-{
-    if (bufferSwitchFlag)
-    {
-        bufferSwitchFlag = false;
-        bufferSwitchPos = halfBufferSize - bufferSwitchPos;
-        tapFile.readBytes((char*) &pBuffer[bufferSwitchPos], halfBufferSize);
-    }
-}
-
 bool TapLoader::SeekToCounter(File tapFile, uint16_t targetCounter)
 {
     // save everything!
@@ -98,8 +83,7 @@ bool TapLoader::SeekToCounter(File tapFile, uint16_t targetCounter)
         // only start from the begining of the tap if we are seeking backwards
         // get to the first byte of actual tap data
         tapFile.seek(TAP_HEADER_LENGTH);
-        tapFile.readBytes((char*) pBuffer, bufferSize);
-        bufferPos = 0;
+        flipBuffer->FillWholeBuffer(tapFile);
         tapInfo.cycles = 0;
         tapInfo.position = 0;
         tapInfo.counterActual = 0;
@@ -114,7 +98,7 @@ bool TapLoader::SeekToCounter(File tapFile, uint16_t targetCounter)
     while (tapInfo.counterActual < targetCounter)
     {
         uint32_t signalTime = CalcSignalTime();
-        FillBufferIfNeeded(tapFile);
+        flipBuffer->FillBufferIfNeeded(tapFile);
 
         if (signalTime == OUT_OF_FILE_MARKER)
         {
@@ -138,25 +122,41 @@ bool TapLoader::SeekToCounter(File tapFile, uint16_t targetCounter)
 
 void TapLoader::StartTimer()
 {
-    // prep the read signal to start HIGH for first high / low transition
-    digitalWrite(C64_READ_PIN, HIGH);
-    // tell the C64 that play has been pressed
-    digitalWrite(C64_SENSE_PIN, LOW);
-    processSignal = true;
-    HWStartTimer();
+    if (!isTiming)
+    {
+        isTiming = true;
+        // prep the read signal to start HIGH for first high / low transition
+        digitalWrite(C64_READ_PIN, HIGH);
+        // tell the C64 that play has been pressed
+        digitalWrite(C64_SENSE_PIN, LOW);
+        processSignal = true;
+        HWStartTimer();
+    }
+    else
+    {
+        Serial.println("TapLoader::StartTimer() called while already running!");
+    }
 }
 
 void TapLoader::StopTimer()
 {
-    // prevent any further buffer processing
-    processSignal = false;
-    // shutdown the hardware timer
-    HWStopTimer();
+    if (isTiming)
+    {
+        isTiming = false;
+        // prevent any further buffer processing
+        processSignal = false;
+        // shutdown the hardware timer
+        HWStopTimer();
 
-    // reset the read signal to initial state
-    digitalWrite(C64_READ_PIN, LOW);
-    // tell the C64 that stop has been pressed
-    digitalWrite(C64_SENSE_PIN, HIGH);
+        // reset the read signal to initial state
+        digitalWrite(C64_READ_PIN, LOW);
+        // tell the C64 that stop has been pressed
+        digitalWrite(C64_SENSE_PIN, HIGH);
+    }
+    else
+    {
+        Serial.println("TapLoader::StopTimer() called, but it already stopped!");
+    }
 }
 
 ErrorCodes TapLoader::VerifyTap(File tapFile)
@@ -167,14 +167,7 @@ ErrorCodes TapLoader::VerifyTap(File tapFile)
     uint32_t tap_magic[TAP_HEADER_MAGIC_LENGTH / 4];
     memset(&tapInfo, 0, sizeof(tapInfo));
 
-    if (pBuffer == NULL)
-    {
-        pBuffer = (uint8_t*) malloc(bufferSize);
-        if (pBuffer == NULL)
-            return ErrorCodes::OUT_OF_MEMORY;
-    }
-
-    bufferPos = 0;
+    flipBuffer->Reset();
 
     tapFile.seek(0);
     size = tapFile.size();
@@ -272,12 +265,12 @@ void TapLoader::PlayTap(File tapFile)
     lcdUtils->Title(S_TAP_OK);
     delay(1000);
 
-    // pre-fill the entire buffer. When the buffer index (bufferPos) crosses the
+    // Pre-fill the entire buffer. When the buffer index (bufferPos) crosses the
     // half way point (bufferSwitchPos) bufferSwitchFlag will be set and the
     // first half of the buffer will be filled with new data. this will toggle
     // with the code below in the while loop, filling the second half of the
     // buffer as the index resets to zero etc.
-    tapFile.readBytes((char*) pBuffer, bufferSize);
+    flipBuffer->FillWholeBuffer(tapFile);
 
     // skip the menu if auto play is set.
     if (!options->autoPlay.GetValue())
@@ -299,11 +292,14 @@ void TapLoader::PlayTap(File tapFile)
         motorOn = digitalRead(C64_MOTOR_PIN);
         if (!processSignal)
         {
+            // ensure we clean up the timer if we ran out of TAP file, as triggered by CalcSignalTime() returning 0xFFFFFFFF
+            // TODO: investigate a possibly cleaner way to handle all of this instead of relying on magic values, processSignal should be owned by Stop/StartTimer
+            StopTimer();
             Serial.println("process signal false detected");
-            break;
+            return;
         }
 
-        FillBufferIfNeeded(tapFile);
+        flipBuffer->FillBufferIfNeeded(tapFile);
 
         // (uint16_t) (DS_G * (sqrt((tapInfo.cycles / 1000000.0 * (DS_V_PLAY / DS_D / PI)) + ((DS_R * DS_R) / (DS_D * DS_D))) - (DS_R / DS_D)));
         tapInfo.counterActual = CYCLES_TO_COUNTER(tapInfo.cycles);

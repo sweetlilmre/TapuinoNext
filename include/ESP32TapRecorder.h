@@ -9,7 +9,7 @@ namespace TapuinoNext
     class ESP32TapRecorder : public TapRecorder
     {
       public:
-        ESP32TapRecorder(UtilityCollection* utilityCollection, uint32_t bufferSize);
+        ESP32TapRecorder(UtilityCollection* utilityCollection);
         ~ESP32TapRecorder();
 
       protected:

@@ -182,7 +182,15 @@ void setup()
 
     Options options(&theFileLoader, &optionEventHander, &menu, &updater);
 
-    UtilityCollection utilityCollection(&lcdUtils, &theInputHandler, &theFileLoader, &options);
+    FlipBuffer flipBuffer(4096);
+    ErrorCodes ret = flipBuffer.Init();
+    if (ret != ErrorCodes::OK)
+    {
+        lcdUtils.Error(S_OUT_OF_MEMORY, ret);
+        while (1) {}
+    }
+
+    UtilityCollection utilityCollection(&lcdUtils, &theInputHandler, &theFileLoader, &options, &flipBuffer);
     LoadSelector lsel(&utilityCollection);
     RecordSelector rsel(&utilityCollection);
     options.LoadOptions();
