@@ -12,28 +12,14 @@ using namespace std;
 
 using namespace TapuinoNext;
 
-TapBase::TapBase(UtilityCollection* utilityCollection, uint32_t bufferSize)
+TapBase::TapBase(UtilityCollection* utilityCollection)
 {
     lcdUtils = utilityCollection->lcdUtils;
     inputHandler = utilityCollection->inputHandler;
     fileLoader = utilityCollection->fileLoader;
     options = utilityCollection->options;
+    flipBuffer = utilityCollection->flipBuffer;
 
-    // ensure the buffer size is a power of 2
-    uint64_t powerTwo = 1;
-    while (powerTwo < bufferSize)
-    {
-        powerTwo <<= 1;
-    }
-    powerTwo >>= 1;
-
-    this->bufferSize = powerTwo;
-    bufferMask = this->bufferSize - 1;
-    halfBufferSize = this->bufferSize >> 1;
-    bufferSwitchPos = halfBufferSize;
-
-    pBuffer = NULL;
-    bufferPos = 0;
     cycleMultRaw = 1;
     cycleMult8 = 1;
     
@@ -51,11 +37,6 @@ TapBase::TapBase(UtilityCollection* utilityCollection, uint32_t bufferSize)
 
 TapBase::~TapBase()
 {
-    if (pBuffer != NULL)
-    {
-        free(pBuffer);
-        pBuffer = NULL;
-    }
 }
 
 void TapBase::SetupCycleTiming()
