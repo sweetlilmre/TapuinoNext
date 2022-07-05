@@ -1,6 +1,6 @@
 #include "LoadSelector.h"
 #include "ESP32TapLoader.h"
-// #include "ESP32TapeCartLoader.h"
+#include "ESP32TapeCartLoader.h"
 #include "FS.h"
 #include "Lang.h"
 
@@ -18,16 +18,56 @@ LoadSelector::~LoadSelector()
 {
 }
 
-bool LoadSelector::Filter(File file)
+FILE_TYPE LoadSelector::GetExtensionType(File file)
 {
 // ".tap"
 #define TAP_MAGIC_BIG_ENDIAN 0x2E746170
 // "pat."
 #define TAP_MAGIC_LITTLE_ENDIAN 0x7061742E
 
+// ".prg"
+#define PRG_MAGIC_BIG_ENDIAN 0x2E707267
+// "grp."
+#define PRG_MAGIC_LITTLE_ENDIAN 0x6772702E
+
+    const char* name = file.name();
+    const char* ext = strrchr(name, '.');
+    if (ext && strlen(ext) > 3)
+    {
+        // capture the extension as a mutable 32-bit number (turn .tap into a 32-bit number trick)
+        uint32_t magic = *(uint32_t*) ext;
+        // and then turn magic into an byte array
+        uint8_t* ch = (uint8_t*) &magic;
+        // lower case the 'string'
+        for (int i = 0; i < 4; i++)
+        {
+            if (ch[i] >= 'A' && ch[i] <= 'Z')
+            {
+                ch[i] += 32;
+            }
+        }
+        // ESP32 is little endian, but the code is written to be as portable as possible
+        // could optimise with a once off endian check some where
+        if (magic == TAP_MAGIC_LITTLE_ENDIAN || magic == TAP_MAGIC_BIG_ENDIAN)
+        {
+            return (FILE_TYPE::TAP);
+        }
+        if ((MACHINE_TYPE) utilityCollection->options->machineType.GetValue() == MACHINE_TYPE::C64)
+        {
+            if (magic == PRG_MAGIC_LITTLE_ENDIAN || magic == PRG_MAGIC_BIG_ENDIAN)
+            {
+                return (FILE_TYPE::PRG);
+            }
+        }
+    }
+    return (FILE_TYPE::INVALID);
+}
+
+bool LoadSelector::Filter(File file)
+{
     // no files or directories with one "." as first char
     const char* name = file.name();
-    if (name[0] == '.')
+    if ((strlen(name) > 1) && (name[0] == '.'))
     {
         if (name[1] == '.')
         {
@@ -44,29 +84,7 @@ bool LoadSelector::Filter(File file)
         return (true);
     }
 
-    const char* ext = strrchr(file.name(), '.');
-    if (ext)
-    {
-        // capture the extension as a mutable 32-bit number (turn .tap into a 32-bit number trick)
-        uint32_t magic = *(uint32_t*) ext;
-        // and then turn magic into an 8-bit array
-        uint8_t* ch = (uint8_t*) &magic;
-        // lower case the 'string'
-        for (int i = 0; i < 4; i++)
-        {
-            if (ch[i] >= 'A' && ch[i] <= 'Z')
-            {
-                ch[i] += 32;
-            }
-        }
-        // ESP32 is little endian, but the code is written to be as portable as possible
-        // could optimise with a once off endian check some where
-        if (magic == TAP_MAGIC_LITTLE_ENDIAN || magic == TAP_MAGIC_BIG_ENDIAN)
-        {
-            return (true);
-        }
-    }
-    return (false);
+    return (GetExtensionType(file) != FILE_TYPE::INVALID);
 }
 
 File LoadSelector::GetFileAtIndex(File dir, int index, int numFiles)
@@ -230,14 +248,30 @@ void LoadSelector::OnAction()
                 else
                 {
                     ESP32TapLoader tl(utilityCollection);
-                    // ESP32TapeCartLoader tapeCartLoader(utilityCollection);
-                    // tapeCartLoader.Init();
                     File tmpFile = GetFileAtIndex(dir, curIndex - 1, numFiles);
-
-                    tl.PlayTap(tmpFile);
-                    // tapeCartLoader.CheckForMode();
-                    tmpFile.close();
                     dir.close();
+                    if (GetExtensionType(tmpFile) == FILE_TYPE::PRG)
+                    {
+                        File loaderFile;
+                        if (ErrorCodes::OK != fileLoader->OpenFile("./loader.tap", loaderFile))
+                        {
+                            lcdUtils->Error("LoaderError!", ErrorCodes::FILE_ERROR);
+                            tmpFile.close();
+                            return;
+                        }
+                        ESP32TapeCartLoader tapeCartLoader(utilityCollection);
+                        tapeCartLoader.Init();
+
+                        tl.PlayTap(loaderFile);
+                        loaderFile.close();
+                        tapeCartLoader.LoadPRG(tmpFile);
+                        tmpFile.close();
+                    }
+                    else
+                    {
+                        tl.PlayTap(tmpFile);
+                        tmpFile.close();
+                    }
                     return;
                 }
                 break;

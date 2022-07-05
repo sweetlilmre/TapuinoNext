@@ -8,7 +8,7 @@ using namespace TapuinoNext;
 
 ESP32TapeCartLoader* ESP32TapeCartLoader::internalClass = NULL;
 
-ESP32TapeCartLoader::ESP32TapeCartLoader(UtilityCollection* utilityCollection, File& prgFile)
+ESP32TapeCartLoader::ESP32TapeCartLoader(UtilityCollection* utilityCollection)
 {
     this->flipBuffer = utilityCollection->flipBuffer;
     this->prgFile = prgFile;
@@ -106,7 +106,7 @@ bool ESP32TapeCartLoader::CheckForMode()
     return (loaderMode);
 }
 
-bool ESP32TapeCartLoader::LoadPRG()
+bool ESP32TapeCartLoader::LoadPRG(File& prgFile)
 {
     if (!CheckForMode())
     {

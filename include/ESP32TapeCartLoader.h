@@ -10,11 +10,10 @@ namespace TapuinoNext
     class ESP32TapeCartLoader
     {
       public:
-        ESP32TapeCartLoader(UtilityCollection* utilityCollection, File& prgFile);
+        ESP32TapeCartLoader(UtilityCollection* utilityCollection);
         ~ESP32TapeCartLoader();
         void Init();
-        bool CheckForMode();
-        bool LoadPRG();
+        bool LoadPRG(File& prgFile);
 
       protected:
         void MotorSignalCallback(bool writeHigh);
@@ -22,6 +21,7 @@ namespace TapuinoNext
         virtual void HWStopSampling();
 
       private:
+        bool CheckForMode();
         bool FastSendByte(uint8_t byte);
         UtilityCollection* utilityCollection;
         FlipBuffer* flipBuffer;
