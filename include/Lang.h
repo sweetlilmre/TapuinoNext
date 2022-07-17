@@ -48,7 +48,7 @@ namespace TapuinoNext
     const char S_SEEK[] = "Seek";
     const char S_EXIT[] = "Exit";
     const char S_CONTINUE[] = "Continue";
-    const char S_SELECT_TO_REC[] = "Select to rec:";
+    const char S_SELECT_TO_START_REC[] = "SELECT to start:";
 
     const char S_OPTIONS[] = "Options";
     const char S_INPUT_AND_UI[] = "Input & UI";
