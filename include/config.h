@@ -7,9 +7,6 @@
 #define C64_READ_PIN 5
 #define C64_WRITE_PIN 18
 
-#define I2C_DISP_ROWS 2
-#define I2C_DISP_COLS 16
-
 #define I2C_DISP_TYPE_HD44780 0
 #define I2C_DISP_TYPE_SSD1306 1
 
@@ -23,4 +20,15 @@
 
 #ifndef I2C_DISP_TYPE
 #error Please define "I2C_DISP_TYPE" as "I2C_DISP_TYPE_HD44780" or "I2C_DISP_TYPE_SSD1306" in config-user.h. Create this file if it does not exist!
+#endif
+
+#ifndef I2C_DISP_HD44780_SIZE 
+    #define I2C_DISP_ROWS 2
+    #define I2C_DISP_COLS 16
+#elif I2C_DISP_HD44780_SIZE == 2004
+    #define I2C_DISP_ROWS 4
+    #define I2C_DISP_COLS 20
+#else
+    #define I2C_DISP_ROWS 2
+    #define I2C_DISP_COLS 16
 #endif
