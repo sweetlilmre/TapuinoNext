@@ -34,6 +34,7 @@ namespace TapuinoNext
     const char S_ENTER_FILENAME[] = "Enter Filename:";
     const char S_REC_MODE_MANUAL[] = "Manual";
     const char S_REC_MODE_AUTO[] = "Auto";
+    const char S_LOADER_ERROR[] = "Loader Error!";
 
     // Menu related strings
     const char S_MAIN_MENU[] = "Main Menu";

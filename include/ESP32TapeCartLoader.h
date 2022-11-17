@@ -16,13 +16,14 @@ namespace TapuinoNext
         bool LoadPRG(File& prgFile);
 
       protected:
-        void MotorSignalCallback(bool writeHigh);
+        void MotorSignalCallback(int writeHigh);
         virtual void HWStartSampling();
         virtual void HWStopSampling();
 
       private:
         bool CheckForMode();
         bool FastSendByte(uint8_t byte);
+        bool FastSendByteInner(uint8_t byte);
         UtilityCollection* utilityCollection;
         FlipBuffer* flipBuffer;
         static ESP32TapeCartLoader* internalClass;
@@ -30,7 +31,6 @@ namespace TapuinoNext
         volatile uint16_t shiftReg;
         bool loaderMode;
         File prgFile;
-        uint16_t callAddr, loadAddr, endAddr;
     };
 } // namespace TapuinoNext
 #endif

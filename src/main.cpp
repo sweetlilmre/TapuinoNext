@@ -65,34 +65,6 @@ void testInputHander()
     }
 }
 
-void testPins()
-{
-    pinMode(C64_SENSE_PIN, OUTPUT);
-    digitalWrite(C64_SENSE_PIN, LOW);
-
-    pinMode(C64_MOTOR_PIN, INPUT_PULLDOWN);
-
-    pinMode(C64_READ_PIN, OUTPUT);
-    digitalWrite(C64_READ_PIN, LOW);
-
-    pinMode(C64_WRITE_PIN, INPUT_PULLDOWN);
-
-    char buf[51];
-    memset(buf, 0, 51);
-    while (true)
-    {
-        int w = digitalRead(C64_WRITE_PIN);
-        int m = digitalRead(C64_MOTOR_PIN);
-        int s = digitalRead(C64_SENSE_PIN);
-        int r = digitalRead(C64_READ_PIN);
-
-        snprintf(buf, 50, "W-%c M-%c S-%c R-%c", w ? 'H' : 'L', m ? 'H' : 'L', s ? 'H' : 'L', r ? 'H' : 'L');
-        lcdUtils.Title(buf);
-
-        delay(500);
-    }
-}
-
 void testEncoderPins()
 {
     Serial.println("testEncoderPins");
@@ -144,7 +116,7 @@ bool initTapuino()
 
     char version[I2C_DISP_COLS + 1];
     memset(version, 0, I2C_DISP_COLS + 1);
-    snprintf(version, I2C_DISP_COLS, "%s", FW_VERSION);
+    snprintf(version, I2C_DISP_COLS + 1, "%s", FW_VERSION);
     lcdUtils.Status(version);
     Serial.println(version);
     delay(2000);
@@ -160,7 +132,7 @@ bool initTapuino()
     }
     Serial.println(S_INIT_OK);
     lcdUtils.Status(S_INIT_OK);
-    delay(1000);
+    // delay(1000);
     return (true);
 }
 
@@ -171,6 +143,61 @@ MenuEntry mainMenuEntries[] = {
 };
 
 TheMenu mainMenu = {S_MAIN_MENU, (MenuEntry*) mainMenuEntries, 3, 0, NULL};
+
+#include "ESP32TapeCartLoader.h"
+
+void TapeCartLoaderTest(UtilityCollection* utilityCollection)
+{
+    LCDUtils* lcd = utilityCollection->lcdUtils;
+
+    pinMode(C64_SENSE_PIN, OUTPUT);
+    digitalWrite(C64_SENSE_PIN, HIGH);
+    pinMode(C64_WRITE_PIN, INPUT_PULLUP);
+
+    File prgFile;
+    if (ErrorCodes::OK != utilityCollection->fileLoader->OpenFile("/test.prg", prgFile))
+    {
+        lcd->Error("Can't open PRG", "test.prg");
+    }
+
+    ESP32TapeCartLoader loader(utilityCollection);
+    while (true)
+    {
+        loader.Init();
+        if (!loader.LoadPRG(prgFile))
+        {
+            lcd->Error("Loader failed", "FAIL!");
+            delay(5000);
+        }
+        else
+        {
+            lcd->Error("Loader worked", "SUCCCESS??");
+            delay(5000);
+        }
+    }
+}
+
+void TapLoaderTest(UtilityCollection* utilityCollection)
+{
+    LCDUtils* lcd = utilityCollection->lcdUtils;
+
+    pinMode(C64_SENSE_PIN, OUTPUT);
+    digitalWrite(C64_SENSE_PIN, HIGH);
+    pinMode(C64_WRITE_PIN, INPUT_PULLUP);
+
+    File tapFile;
+    if (ErrorCodes::OK != utilityCollection->fileLoader->OpenFile("/TapeCartLoader.tap", tapFile))
+    {
+        lcd->Error("Can't open PRG", "test.prg");
+    }
+
+    ESP32TapLoader loader(utilityCollection);
+    while (true)
+    {
+        loader.PlayTap(tapFile);
+    }
+    while (1);
+}
 
 void setup()
 {
@@ -194,6 +221,8 @@ void setup()
     LoadSelector lsel(&utilityCollection);
     RecordSelector rsel(&utilityCollection);
     options.LoadOptions();
+
+    //TapLoaderTest(&utilityCollection);
 
     while (true)
     {

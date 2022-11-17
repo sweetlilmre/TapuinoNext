@@ -13,8 +13,8 @@ namespace TapuinoNext
         virtual ErrorCodes Init();
         void Reset();
 
-        ErrorCodes SetHeader(uint8_t* byteFiller, uint32_t size);
-        ErrorCodes FillWholeBuffer(File file, uint32_t atPos = 0);
+        ErrorCodes CopyBlock(const uint8_t* block, uint32_t size, uint32_t offset = 0);
+        ErrorCodes FillWholeBuffer(File file, uint32_t offest = 0);
 
         uint8_t ReadByte();
         void FillBufferIfNeeded(File tapFile);
@@ -22,6 +22,9 @@ namespace TapuinoNext
         void WriteByte(uint8_t value);
         void FlushBufferIfNeeded(File tapFile);
         void FlushBufferFinal(File tapFile);
+
+        const uint8_t* GetBuffer() {return pBuffer;}
+        const uint32_t GetBufferSize() {return bufferSize;}
 
 
       private:

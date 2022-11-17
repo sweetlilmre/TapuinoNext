@@ -10,7 +10,11 @@ FlipBuffer::FlipBuffer(uint32_t bufferSize)
     {
         powerTwo <<= 1;
     }
-    powerTwo >>= 1;
+    
+    if (powerTwo > bufferSize)
+    {
+        powerTwo >>= 1;
+    }
 
     this->bufferSize = powerTwo;
     bufferMask = this->bufferSize - 1;
@@ -52,23 +56,23 @@ void FlipBuffer::Reset()
     }
 }
 
-ErrorCodes FlipBuffer::SetHeader(uint8_t* header, uint32_t size)
+ErrorCodes FlipBuffer::CopyBlock(const uint8_t* block, uint32_t size, uint32_t offset)
 {
-    if (size > bufferSize)
+    if ((offset + size) > bufferSize)
     {
         return ErrorCodes::OUT_OF_RANGE;
     }
     
-    memcpy(pBuffer, header, size);
+    memcpy(&pBuffer[offset], block, size);
     bufferPos = 0;
     return ErrorCodes::OK;
 }
 
-ErrorCodes FlipBuffer::FillWholeBuffer(File file, uint32_t atPos)
+ErrorCodes FlipBuffer::FillWholeBuffer(File file, uint32_t offest)
 {
-    if (atPos < bufferSize)
+    if (offest < bufferSize)
     {
-        file.read(&pBuffer[atPos], bufferSize - atPos);
+        file.read(&pBuffer[offest], bufferSize - offest);
         bufferPos = 0;
         return ErrorCodes::OK;
     }

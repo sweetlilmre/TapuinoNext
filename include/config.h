@@ -15,6 +15,15 @@
 
 #define LCD_SSD1306_128x64
 
+#define DEBUG 
+
+#ifdef DEBUG
+#define DEBUG_LOG(fmt, args...)    Serial.printf(fmt, ## args)
+#else
+#define DEBUG_LOG(fmt, args...)    /* Don't do anything in release builds */
+#endif
+
+
 #include "config-user.h"
 
 #ifndef I2C_DISP_ADDR

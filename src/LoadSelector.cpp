@@ -253,9 +253,10 @@ void LoadSelector::OnAction()
                     if (GetExtensionType(tmpFile) == FILE_TYPE::PRG)
                     {
                         File loaderFile;
-                        if (ErrorCodes::OK != fileLoader->OpenFile("./loader.tap", loaderFile))
+                        ErrorCodes err = fileLoader->OpenFile("/TapeCartLoaderCut.tap", loaderFile);
+                        if (err != ErrorCodes::OK)
                         {
-                            lcdUtils->Error("LoaderError!", ErrorCodes::FILE_ERROR);
+                            lcdUtils->Error(S_LOADER_ERROR, ErrorCodes::FILE_ERROR);
                             tmpFile.close();
                             return;
                         }
@@ -264,7 +265,10 @@ void LoadSelector::OnAction()
 
                         tl.PlayTap(loaderFile);
                         loaderFile.close();
-                        tapeCartLoader.LoadPRG(tmpFile);
+                        if (!tapeCartLoader.LoadPRG(tmpFile))
+                        {
+                            lcdUtils->Error("Error on PRG!", ErrorCodes::FILE_ERROR);
+                        }
                         tmpFile.close();
                     }
                     else

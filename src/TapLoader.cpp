@@ -165,7 +165,7 @@ ErrorCodes TapLoader::VerifyTap(File tapFile)
     // byte wise header magic is read into 32bit values for easy comparison
     // below
     uint32_t tap_magic[TAP_HEADER_MAGIC_LENGTH / 4];
-    memset(&tapInfo, 0, sizeof(tapInfo));
+    memset(&tapInfo, 0, sizeof(TAP_INFO));
 
     flipBuffer->Reset();
 
@@ -285,17 +285,18 @@ void TapLoader::PlayTap(File tapFile)
     lcdUtils->ShowFile(tapFile.name(), false);
     uint32_t tickerTime = options->tickerTime.GetValue();
 
+    motorOn = false;
     StartTimer();
 
     while (true)
     {
-        motorOn = digitalRead(C64_MOTOR_PIN);
         if (!processSignal)
         {
+            DEBUG_LOG("FINAL: cycles: %u, pos: %u, len: %u\n", tapInfo.cycles, tapInfo.position, tapInfo.length);
             // ensure we clean up the timer if we ran out of TAP file, as triggered by CalcSignalTime() returning 0xFFFFFFFF
             // TODO: investigate a possibly cleaner way to handle all of this instead of relying on magic values, processSignal should be owned by Stop/StartTimer
             StopTimer();
-            Serial.println("process signal false detected");
+            DEBUG_LOG("processSignal: false detected\n");
             return;
         }
 

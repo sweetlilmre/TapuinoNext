@@ -26,6 +26,7 @@ void ESP32TapLoader::HWStartTimer()
     {
         stopping = false;
         stopped = false;
+        lastSignalTime = 0;
 
         // set up 2Mhz timer
         tapSignalTimer = timerBegin(0, 40, true);
@@ -74,6 +75,7 @@ void IRAM_ATTR ESP32TapLoader::TapSignalTimer()
     // default to an idle mode that keeps the timer ticking while not processing any signals
     uint32_t signalTime = IDLE_TIMER_EXECUTE;
 
+    motorOn = digitalRead(C64_MOTOR_PIN);
     if (processSignal && motorOn)
     {
         if (signal1stHalf)
@@ -84,6 +86,7 @@ void IRAM_ATTR ESP32TapLoader::TapSignalTimer()
             if (lastSignalTime == 0xFFFFFFFF)
             {
                 processSignal = false;
+                stopping = true;
                 stopped = true;
                 return;
             }
