@@ -49,3 +49,4 @@ include/config-user.h
 
 # tmp python modukes
 __pycache__/*
+post_esp32.py

@@ -23,14 +23,14 @@ jobs:
         
     # Make the local_config.h file!
       - name: Add config-user.h
-        uses: DamianReeves/write-file-action@v1.0
+        uses: DamianReeves/write-file-action@v1.2
         with:
           path: ./include/config-user.h
           contents: "#pragma once\n#define I2C_DISP_ADDR 0x27\n#define I2C_DISP_TYPE I2C_DISP_TYPE_HD44780"
           write-mode: overwrite 
           
       - name: PlatformIO Run
-        uses: karniv00l/platformio-run-action@0.1.0
+        uses: karniv00l/platformio-run-action@1.1.1
         with:
           jobs: 6
           silent: false
@@ -50,4 +50,6 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/')
         with:
           body: ${{ format('{0} {1}', '[**Release Notes:**](https://github.com/sweetlilmre/TapuinoNext/blob/main/RELEASE_NOTES.md)', join(fromJson(steps.generate_notes.outputs.notes).notes, '')) }}
-          files: .pio/build/esp32dev/update.bin
+          files: |
+           .pio/build/esp32dev/update.bin
+           .pio/build/esp32dev/update.factory.bin
