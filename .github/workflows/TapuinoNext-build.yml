@@ -30,7 +30,7 @@ jobs:
           write-mode: overwrite 
 
       - name: Fetch the full factory binary packing script
-        run: curl https://raw.githubusercontent.com/letscontrolit/ESPEasy/3678488f6a67ac9b899fab3d0ccd176c4437b1b4/tools/pio/post_esp32.py -o ./post_esp32.py
+        run: curl https://raw.githubusercontent.com/letscontrolit/ESPEasy/3678488f6a67ac9b899fab3d0ccd176c4437b1b4/tools/pio/post_esp32.py -o ./pack_firmware.py
 
       - name: PlatformIO Run
         uses: karniv00l/platformio-run-action@v1.1.1
