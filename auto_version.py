@@ -13,7 +13,7 @@ version = ''
 
 env.Replace(PROGNAME="update")
 
-tc.fetch_packer_script()
+# tc.fetch_packer_script()
 
 print("********** AUTO VERSION **********")
 cur_branch = tc.git_check("branch", "--no-color", "--show-current")
