@@ -28,6 +28,9 @@ ESP32 Devkit part
 Nothing on the internet that I could find had either the correct pin out or size for the dev kit board. I have created a part heavily inspired by the following:
 - https://hackaday.io/project/46280-muffsy-stereo-relay-input-selector/log/87314-esp32s-devkit-eagle-library
   - https://cdn.hackaday.io/files/462801980043520/ESP32-DEVKITC.lbr
-## Others: PNG Images, stripboard design, schematics, board and libraries
+## Others:
+PNG Images, stripboard design, schematics, board and libraries
 - sweetlilmre
 
+## Factory bin image generation script:
+https://raw.githubusercontent.com/letscontrolit/ESPEasy/3678488f6a67ac9b899fab3d0ccd176c4437b1b4/tools/pio/post_esp32.py
