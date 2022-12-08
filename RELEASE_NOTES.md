@@ -3,6 +3,16 @@
 ** sweetlilmre <sweetlilmre@gmail.com> **
 *****************************************
 
+## v0.0.3-alpha+267 - 08 December 2022
+
+### Feature
+  - Added `update.factory.bin` to the build and release artifacts
+  - Updated documentation to show how to flash the firmware from a browser, using `update.factory.bin`
+  - Internal changes to support the above
+
+### Fix
+  - Fixed printing of the TapuinoNext version to the serial port 
+
 ## v0.0.3-alpha+240 - 22 June 2022
 
 ### Feature

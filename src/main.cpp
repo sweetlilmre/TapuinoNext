@@ -144,7 +144,7 @@ bool initTapuino()
 
     char version[I2C_DISP_COLS + 1];
     memset(version, 0, I2C_DISP_COLS + 1);
-    snprintf(version, I2C_DISP_COLS, "%s", FW_VERSION);
+    snprintf(version, I2C_DISP_COLS + 1, "%s", FW_VERSION);
     lcdUtils.Status(version);
     Serial.println(version);
     delay(2000);

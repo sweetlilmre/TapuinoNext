@@ -56,6 +56,16 @@ As newer firmware can self update, all you need to do is drop the *update.bin* f
 
 For a first time build:
 
+There is now an alternative to building the code and flashing.
+- Download the latest `update.factory.bin` from the [TapuinoNext Releases Page ](https://github.com/sweetlilmre/TapuinoNext/releases)
+- Using Google Chrome, go to the [Adafruit ESP Tool](https://adafruit.github.io/Adafruit_WebSerial_ESPTool/) page.
+- Connect your ESP32 to your machine and make sure the drivers are installed
+- Click "Connect" on the Adafruit page and select the COM port of your ESP32
+- If the connect succeeds, you should see several `Choose a file...` buttons
+- Click the first one, navigate to and select the `update.factory.bin` file you downloaded
+- Click `Program`
+- A progress bar will appear, once this is complete you should be good to go
+
 Probably the easiest way to handle this at the moment is to:
 - install VS Code
 - install Platformio on top of that
